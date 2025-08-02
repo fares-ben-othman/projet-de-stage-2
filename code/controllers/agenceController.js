@@ -41,10 +41,10 @@ const updateAgence = async (req, res) => {
     }
 };
 
-const removeAgence = async (req, res) => {
+const deleteAgence = async (req, res) => {
     const { id } = req.params;
     try {
-        await agenceModel.removeAgence(id);
+        await agenceModel.deleteAgence(id);
         res.status(200).json({ message: 'Agence supprimé avec succès' });
     } catch (err) {
         res.status(500).json({ error: 'Erreur lors de la suppression de l\'agence' });
@@ -56,5 +56,5 @@ module.exports = {
     getAgenceById,
     createAgence,
     updateAgence,
-    removeAgence,
+    deleteAgence,
 };

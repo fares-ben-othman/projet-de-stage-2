@@ -1,4 +1,4 @@
-const pool = require('./connection');
+const pool = require('../connection');
 
 const getAllClients = () => {
     return pool.query("SELECT * FROM clients WHERE is_deleted = FALSE");
