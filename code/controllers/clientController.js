@@ -1,4 +1,5 @@
 const clientModel = require('../models/clientModel');
+const { clientSchema } = require('../validators/clientValidator');
 
 const getAllClients = async (req, res) => {
     try {
@@ -8,7 +9,6 @@ const getAllClients = async (req, res) => {
         res.status(500).json({ error: 'Erreur lors de la récupération des clients' });
     }
 };
-
 
 const getClientById = async (req, res) => {
     const { id } = req.params;
@@ -23,8 +23,12 @@ const getClientById = async (req, res) => {
     }
 };
 
-
 const createClient = async (req, res) => {
+    const { error } = clientSchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
     try {
         await clientModel.createClient(req.body);
         res.status(201).json({ message: 'Client créé avec succès' });
@@ -33,9 +37,14 @@ const createClient = async (req, res) => {
     }
 };
 
-
 const updateClient = async (req, res) => {
     const { id } = req.params;
+
+    const { error } = clientSchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
     try {
         await clientModel.updateClient(req.body, id);
         res.status(200).json({ message: 'Client mis à jour avec succès' });
@@ -43,7 +52,6 @@ const updateClient = async (req, res) => {
         res.status(500).json({ error: 'Erreur lors de la mise à jour du client' });
     }
 };
-
 
 const deleteClient = async (req, res) => {
     const { id } = req.params;

@@ -1,4 +1,5 @@
 const agenceModel = require('../models/agenceModel');
+const { agenceSchema } = require('../validators/agenceValidator');
 
 const getAllAgences = async (req, res) => {
     try {
@@ -14,7 +15,7 @@ const getAgenceById = async (req, res) => {
     try {
         const [rows] = await agenceModel.getAgenceById(id);
         if (rows.length === 0) {
-            return res.status(404).json({ error: 'Agence non trouvé' });
+            return res.status(404).json({ error: 'Agence non trouvée' });
         }
         res.status(200).json(rows[0]);
     } catch (err) {
@@ -23,9 +24,14 @@ const getAgenceById = async (req, res) => {
 };
 
 const createAgence = async (req, res) => {
+    const { error } = agenceSchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
     try {
         await agenceModel.createAgence(req.body);
-        res.status(201).json({ message: 'Agence ajouté avec succès' });
+        res.status(201).json({ message: 'Agence ajoutée avec succès' });
     } catch (err) {
         res.status(500).json({ error: 'Erreur lors de l\'ajout de l\'agence' });
     }
@@ -33,11 +39,16 @@ const createAgence = async (req, res) => {
 
 const updateAgence = async (req, res) => {
     const { id } = req.params;
+    const { error } = agenceSchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
     try {
         await agenceModel.updateAgence(req.body, id);
-        res.status(200).json({ message: 'Agence mis à jour avec succès' });
+        res.status(200).json({ message: 'Agence mise à jour avec succès' });
     } catch (err) {
-        res.status(500).json({ error: 'Erreur lors de la mise à jour de l\'agence ' });
+        res.status(500).json({ error: 'Erreur lors de la mise à jour de l\'agence' });
     }
 };
 
@@ -45,7 +56,7 @@ const deleteAgence = async (req, res) => {
     const { id } = req.params;
     try {
         await agenceModel.deleteAgence(id);
-        res.status(200).json({ message: 'Agence supprimé avec succès' });
+        res.status(200).json({ message: 'Agence supprimée avec succès' });
     } catch (err) {
         res.status(500).json({ error: 'Erreur lors de la suppression de l\'agence' });
     }

@@ -1,4 +1,5 @@
 const contractModel = require("../models/contractModel");
+const contractValidator = require("../validators/contractValidator");
 
 const getAllContracts = async (req, res) => {
   try {
@@ -9,7 +10,6 @@ const getAllContracts = async (req, res) => {
     res.status(500).json({ message: "Failed to get contracts" });
   }
 };
-
 
 const getContractById = async (req, res) => {
   const id = req.params.id;
@@ -25,9 +25,14 @@ const getContractById = async (req, res) => {
   }
 };
 
-// el function createContract hedhi mehech kemla mezel el logique mte3ha ne9es les exceptions //
 const createContract = async (req, res) => {
   const data = req.body;
+
+  const { error } = contractValidator.validate(data);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+
   try {
     const [result] = await contractModel.createContract(data);
     res.status(201).json({ message: "Contract created", id: result.insertId });
@@ -37,10 +42,15 @@ const createContract = async (req, res) => {
   }
 };
 
-
 const updateContract = async (req, res) => {
   const id = req.params.id;
   const data = req.body;
+
+  const { error } = contractValidator.validate(data);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+
   try {
     const [result] = await contractModel.updateContract(data, id);
     if (result.affectedRows === 0) {
@@ -52,7 +62,6 @@ const updateContract = async (req, res) => {
     res.status(500).json({ message: "Failed to update contract" });
   }
 };
-
 
 const deleteContract = async (req, res) => {
   const id = req.params.id;
@@ -75,4 +84,3 @@ module.exports = {
   updateContract,
   deleteContract,
 };
-
