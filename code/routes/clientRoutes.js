@@ -122,6 +122,6 @@ router.put('/update/:id', clientController.updateClient);
  *       200:
  *         description: Client supprimé
  */
-router.delete('/delete/:id', clientController.removeClient);
+router.delete('/delete/:id', clientController.deleteClient);
 
 module.exports = router;

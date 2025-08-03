@@ -13,10 +13,11 @@ app.use(express.json());
 
 const agenceRoute = require('./routes/agenceRoutes');
 const clientRoute = require('./routes/clientRoutes');
+const contractRoute = require('./routes/contractRoutes');
 
 app.use('/agences', agenceRoute);
 app.use('/clients', clientRoute);
-
+app.use('/contracts', contractRoute);
 
 const PORT = process.env.PORT ;
 app.listen(PORT, '0.0.0.0', () => {

@@ -18,7 +18,7 @@ const updateClient =(data,id) => {
     return pool.query("Update clients SET nom = ? , prenom = ?, email = ?, telephone = ?, cin = ? WHERE id = ? ",[nom,prenom,email,telephone,cin,id]);
 };
 
-const removeClient =(id) =>{
+const deleteClient =(id) =>{
     return pool.query("UPDATE clients SET is_deleted = TRUE, deleted_at = NOW() WHERE id = ? ",
     [id]);
 }
@@ -28,5 +28,5 @@ module.exports ={
    getClientById ,
    createClient ,
    updateClient ,
-   removeClient
+   deleteClient
 };

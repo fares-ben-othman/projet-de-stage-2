@@ -45,7 +45,7 @@ const updateClient = async (req, res) => {
 };
 
 
-const removeClient = async (req, res) => {
+const deleteClient = async (req, res) => {
     const { id } = req.params;
     try {
         await clientModel.removeClient(id);
@@ -60,5 +60,5 @@ module.exports = {
     getClientById,
     createClient,
     updateClient,
-    removeClient
+    deleteClient
 };
