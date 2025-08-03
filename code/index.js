@@ -15,12 +15,13 @@ const agenceRoute = require('./routes/agenceRoutes');
 const clientRoute = require('./routes/clientRoutes');
 const contractRoute = require('./routes/contractRoutes');
 const vehiculeRoutes = require('./routes/vehiculeRoutes');
-
+const historique_vehiculeRoutes = require('./routes/historique_vehiculeRoutes');
 
 app.use('/agences', agenceRoute);
 app.use('/clients', clientRoute);
 app.use('/contracts', contractRoute);
 app.use('/vehicules', vehiculeRoutes);
+app.use('/histroique_vehicule',historique_vehiculeRoutes);
 const PORT = process.env.PORT ;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
