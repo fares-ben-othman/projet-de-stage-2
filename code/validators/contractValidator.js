@@ -30,4 +30,4 @@ const contratValidator = Joi.object({
   deleted_at: Joi.date().allow(null),
 });
 
-module.exports = contratValidator;
+module.exports = {contratValidator};

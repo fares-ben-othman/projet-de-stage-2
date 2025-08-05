@@ -11,4 +11,4 @@ const vehiculeSchema = Joi.object({
   agence_id: Joi.number().integer().required(),
 });
 
-module.exports = vehiculeSchema;
+module.exports = {vehiculeSchema};

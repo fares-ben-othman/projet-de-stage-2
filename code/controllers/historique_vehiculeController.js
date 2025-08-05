@@ -1,62 +1,49 @@
-const pool = require('../connection'); 
-const historiqueVehiculeSchema = require('../validators/historique_vehiculeValidator');
+const HistoriqueVehicule = require('../models/historique_vehiculeModel');
+const { historiqueVehiculeSchema } = require('../validators/historique_vehiculeValidator');
 
-const getAllHistorique = async (req, res) => {
+
+
+const getAllHistoriques = async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM historique_vehicule');
-    res.json(rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Erreur serveur lors de la récupération des historiques.' });
+    const [rows] = await HistoriqueVehicule.getAll();
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error('Erreur lors de la récupération de l\'historique :', error);
+    res.status(500).json({ message: 'Erreur serveur' });
   }
 };
+
 
 const getHistoriqueByVehiculeId = async (req, res) => {
-  const vehiculeId = parseInt(req.params.vehiculeId, 10);
-  if (isNaN(vehiculeId)) {
-    return res.status(400).json({ message: 'vehiculeId invalide.' });
-  }
+  const vehiculeId = req.params.id;
   try {
-    const [rows] = await pool.query('SELECT * FROM historique_vehicule WHERE vehicule_id = ?', [vehiculeId]);
-    res.json(rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Erreur serveur lors de la récupération de l\'historique.' });
+    const [rows] = await HistoriqueVehicule.getByVehiculeId(vehiculeId);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(`Erreur lors de la récupération de l'historique pour le véhicule ${vehiculeId} :`, error);
+    res.status(500).json({ message: 'Erreur serveur' });
   }
 };
 
+
 const createHistorique = async (req, res) => {
-  
-  const { error, value } = historiqueVehiculeSchema.validate(req.body);
-  if (error) {
-    return res.status(400).json({ message: error.details[0].message });
+  const {error} = historiqueVehiculeSchema.validate(req.body);
+  if (error){
+    return res.status(400).json({ error: error.details[0].message});
   }
-
-  
-  const { vehicule_id, date_action, type_action, description, utilisateur_id } = value;
-
+  const { vehicule_id, type_action, description, utilisateur_id } = req.body;
   try {
-    const [result] = await pool.query(
-      `INSERT INTO historique_vehicule 
-      (vehicule_id, date_action, type_action, description, utilisateur_id) 
-      VALUES (?, ?, ?, ?, ?)`,
-      [
-        vehicule_id,
-        date_action || new Date(), 
-        type_action,
-        description || null,
-        utilisateur_id || null
-      ]
-    );
-    res.status(201).json({ id: result.insertId, message: 'Historique ajouté avec succès.' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Erreur serveur lors de l\'ajout de l\'historique.' });
+    await HistoriqueVehicule.create({ vehicule_id, type_action, description, utilisateur_id });
+    res.status(201).json({ message: 'Historique ajouté avec succès' });
+  } catch (error) {
+    console.error('Erreur lors de la création de l\'historique :', error);
+    res.status(500).json({ message: 'Erreur serveur' });
   }
 };
 
 module.exports = {
-  getAllHistorique,
+  getAllHistoriques,
   getHistoriqueByVehiculeId,
   createHistorique
 };
+

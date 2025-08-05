@@ -10,4 +10,4 @@ const historiqueVehiculeSchema = Joi.object({
   utilisateur_id: Joi.number().integer().positive().allow(null).optional(),
 });
 
-module.exports = historiqueVehiculeSchema;
+module.exports = {historiqueVehiculeSchema};

@@ -11,7 +11,7 @@ const historiqueController = require('../controllers/historique_vehiculeControll
 
 /**
  * @swagger
- * /historique_vehicule:
+ * /historique_vehicule/get-all:
  *   get:
  *     summary: Récupérer tous les historiques de véhicules
  *     tags: [HistoriqueVehicule]
@@ -39,11 +39,11 @@ const historiqueController = require('../controllers/historique_vehiculeControll
  *                   utilisateur_id:
  *                     type: integer
  */
-router.get('/', historiqueController.getAllHistorique);
+router.get('/get-all', historiqueController.getAllHistoriques);
 
 /**
  * @swagger
- * /historique_vehicule/{vehiculeId}:
+ * /historique_vehicule/getByVehiculeId/{vehiculeId}:
  *   get:
  *     summary: Récupérer l'historique d'un véhicule par son ID
  *     tags: [HistoriqueVehicule]
@@ -80,11 +80,11 @@ router.get('/', historiqueController.getAllHistorique);
  *       400:
  *         description: ID du véhicule invalide
  */
-router.get('/:vehiculeId', historiqueController.getHistoriqueByVehiculeId);
+router.get('/getByVehiculeId/:vehiculeId', historiqueController.getHistoriqueByVehiculeId);
 
 /**
  * @swagger
- * /historique_vehicule:
+ * /historique_vehicule/create:
  *   post:
  *     summary: Ajouter un nouvel historique véhicule
  *     tags: [HistoriqueVehicule]
@@ -125,6 +125,6 @@ router.get('/:vehiculeId', historiqueController.getHistoriqueByVehiculeId);
  *       400:
  *         description: Erreur de validation des données
  */
-router.post('/', historiqueController.createHistorique);
+router.post('/create', historiqueController.createHistorique);
 
 module.exports = router;
