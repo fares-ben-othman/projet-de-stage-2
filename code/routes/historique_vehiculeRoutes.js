@@ -6,7 +6,7 @@ const historiqueController = require('../controllers/historique_vehiculeControll
  * @swagger
  * tags:
  *   name: HistoriqueVehicule
- *   description: Gestion de l'historique des véhicules
+ *   description: API pour gérer l'historique des véhicules
  */
 
 /**

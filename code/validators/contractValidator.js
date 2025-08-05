@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const contratValidator = Joi.object({
+const contratSchema = Joi.object({
   client_id: Joi.number().integer().required(),
   vehicule_id: Joi.number().integer().required(),
   agence_id: Joi.number().integer().required(),
@@ -30,4 +30,4 @@ const contratValidator = Joi.object({
   deleted_at: Joi.date().allow(null),
 });
 
-module.exports = {contratValidator};
+module.exports = {contratSchema};

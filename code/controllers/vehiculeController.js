@@ -1,5 +1,5 @@
 const vehiculeModel = require('../models/vehiculeModel');
-const vehiculeValidator = require('../validators/vehiculeValidator');
+const vehiculeSchema = require('../validators/vehiculeValidator');
 
 const getAllVehicules = async (req, res) => {
   try {
@@ -27,7 +27,7 @@ const getVehiculeById = async (req, res) => {
 
 const createVehicule = async (req, res) => {
   const data = req.body;
-  const { error } = vehiculeValidator.validate(data);
+  const { error } = vehiculeSchema.validate(data);
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }
@@ -43,7 +43,7 @@ const createVehicule = async (req, res) => {
 const updateVehicule = async (req, res) => {
   const id = req.params.id;
   const data = req.body;
-  const { error } = vehiculeValidator.validate(data);
+  const { error } = vehiculeSchema.validate(data);
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }

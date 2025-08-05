@@ -1,5 +1,5 @@
 const contractModel = require("../models/contractModel");
-const contractValidator = require("../validators/contractValidator");
+const contractSchema = require("../validators/contractValidator");
 
 const getAllContracts = async (req, res) => {
   try {
@@ -28,7 +28,7 @@ const getContractById = async (req, res) => {
 const createContract = async (req, res) => {
   const data = req.body;
 
-  const { error } = contractValidator.validate(data);
+  const { error } = contractSchema.validate(data);
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }
@@ -46,7 +46,7 @@ const updateContract = async (req, res) => {
   const id = req.params.id;
   const data = req.body;
 
-  const { error } = contractValidator.validate(data);
+  const { error } = contractSchema.validate(data);
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }
