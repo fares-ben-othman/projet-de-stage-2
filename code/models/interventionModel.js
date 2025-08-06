@@ -19,8 +19,8 @@ const createIntervention = (data) => {
 const updateIntervention = (data , id) => {
   const { vehicule_id, type, date_intervention, agence_id, prestataire, cout, commentaire, facture_pdf } = data;
   return pool.query(
-    'UPDATE interventions SET type = ?, date_intervention = ?, agence_id = ?, prestataire = ?, cout = ?,commentaire = ?, facture_pdf = ? WHERE vehicule_id = ?',
-    [ type, date_intervention, agence_id, prestataire, cout, commentaire, facture_pdf,vehicule_id]
+    'UPDATE interventions SET vehicule_id = ? ,type = ?, date_intervention = ?, agence_id = ?, prestataire = ?, cout = ?,commentaire = ?, facture_pdf = ? WHERE id = ?',
+    [ vehicule_id,type, date_intervention, agence_id, prestataire, cout, commentaire, facture_pdf,id]
   );
 };
 
