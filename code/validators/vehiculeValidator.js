@@ -6,7 +6,7 @@ const vehiculeSchema = Joi.object({
   modele: Joi.string().max(50).allow(null, ''),
   annee: Joi.number().integer().min(1900).max(new Date().getFullYear()).allow(null),
   kilometrage: Joi.number().integer().min(0).default(0),
-  statut: Joi.string().valid('disponible', 'loue', 'maintenance', 'leasing', 'reserve').default('disponible'),
+  statut: Joi.string().valid('disponible', 'loue', 'maintenance', 'leasing', 'reserve','transfert').default('disponible'),
   date_assurance: Joi.date().allow(null),
   agence_id: Joi.number().integer().required(),
 });

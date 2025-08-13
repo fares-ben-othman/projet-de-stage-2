@@ -1,5 +1,5 @@
 const contractModel = require("../models/contractModel");
-const contractSchema = require("../validators/contractValidator");
+const {contractSchema} = require("../validators/contractValidator");
 
 const getAllContracts = async (req, res) => {
   try {

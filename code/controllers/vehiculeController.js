@@ -1,5 +1,5 @@
 const vehiculeModel = require('../models/vehiculeModel');
-const vehiculeSchema = require('../validators/vehiculeValidator');
+const { vehiculeSchema } = require('../validators/vehiculeValidator');
 
 const getAllVehicules = async (req, res) => {
   try {

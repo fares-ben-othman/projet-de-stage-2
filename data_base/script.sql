@@ -22,7 +22,7 @@ CREATE TABLE vehicules (
   modele VARCHAR(50),
   annee INT,
   kilometrage BIGINT DEFAULT 0,
-  statut ENUM('disponible', 'loue', 'maintenance', 'leasing', 'reserve') DEFAULT 'disponible',
+  statut ENUM('disponible', 'loue', 'maintenance', 'leasing', 'transfert','reserve') DEFAULT 'disponible',
   date_assurance DATE,
   agence_id INT,
   is_deleted BOOLEAN DEFAULT FALSE,
