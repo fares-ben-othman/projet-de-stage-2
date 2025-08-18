@@ -8,6 +8,13 @@ const getClientById = (id) => {
     return pool.query("SELECT * FROM clients WHERE is_deleted = False AND id = ? ",[id]);
 };
 
+const getClientByEmail = (email) =>{
+    return pool.query("SELECT * FROM clients WHERE is_deleted = False AND email = ? ",[email]);
+};
+
+const getClientByCin = (cin) => {
+    return pool.query("SELECT * FROM clients WHERE is_deleted = FALSE AND cin = ?", [cin]);
+};
 const createClient =(data) => {
     const { nom,prenom,email,telephone,cin} = data;
     return pool.query("INSERT INTO clients (nom ,prenom ,email, telephone, cin ) Values (? ,? ,? ,? ,?)",[nom,prenom,email,telephone,cin] );
@@ -26,6 +33,8 @@ const deleteClient =(id) =>{
 module.exports ={
    getAllClients ,
    getClientById ,
+   getClientByEmail,
+   getClientByCin,
    createClient ,
    updateClient ,
    deleteClient

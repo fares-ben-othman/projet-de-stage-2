@@ -20,14 +20,14 @@ const createAgence = (data) => {
 const updateAgence = (data , id) => {
   const { nom, adresse, ville, telephone, email } = data;
   return pool.query(
-    'UPDATE agences SET nom = ?, adresse = ?, ville = ?, telephone = ?, email = ? WHERE id = ?',
+    'UPDATE agences SET nom = ?, adresse = ?, ville = ?, telephone = ?, email = ? WHERE id = ? ',
     [nom, adresse, ville, telephone, email, id]
   );
 };
 // hedhi tetsemma soft deletion 5ater fel 79i9a mehech bech tetfasse5 mel base de données
 const deleteAgence = (id) => {
   return pool.query(
-    'UPDATE agences SET is_deleted = TRUE, deleted_at = NOW() WHERE id = ?',
+    'UPDATE agences SET is_deleted = TRUE, deleted_at = NOW() WHERE id = ? ',
     [id]
   );
 };

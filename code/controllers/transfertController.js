@@ -3,32 +3,40 @@ const transfertModel = require('../models/transfertModel');
 const vehiculeModel = require('../models/vehiculeModel');
 
 const getAllTransferts = async (req, res) => {
+  console.log("Action: Récupération de tous les transferts");
   try {
     const [rows] = await transfertModel.getAllTransferts();
+    console.log(`Transferts récupérés: ${rows.length}`);
     res.status(200).json(rows);
   } catch (err) {
-    console.error(err);
+    console.error("Erreur lors de la récupération des transferts:", err);
     res.status(500).json({ message: 'Erreur serveur' });
   }
 };
 
 const getTransfertById = async (req, res) => {
+  const id = req.params.id;
+  console.log(`Action: Récupération du transfert avec ID ${id}`);
   try {
-    const [rows] = await transfertModel.getTransfertById(req.params.id);
-    if (rows.length === 0) return res.status(404).json({ error: 'Transfert introuvable' });
+    const [rows] = await transfertModel.getTransfertById(id);
+    if (rows.length === 0) {
+      console.log(`Transfert avec ID ${id} introuvable`);
+      return res.status(404).json({ error: 'Transfert introuvable' });
+    }
+    console.log("Transfert récupéré:", rows[0]);
     res.status(200).json(rows[0]);
   } catch (err) {
-    console.error(err);
+    console.error(`Erreur lors de la récupération du transfert avec ID ${id}:`, err);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 };
 
 const createTransfert = async (req, res) => {
-  console.log('Requête reçue pour création transfert:', req.body);
+  console.log('Action: Création d\'un transfert, requête reçue:', req.body);
 
   const { error, value } = transfertSchema.validate(req.body);
   if (error) {
-    console.log('Erreur validation:', error.details[0].message);
+    console.log('Erreur de validation:', error.details[0].message);
     return res.status(400).json({ error: error.details[0].message });
   }
   console.log('Validation réussie, données validées:', value);
@@ -56,8 +64,9 @@ const createTransfert = async (req, res) => {
       console.log(`L'agence source (${source_agence_id}) ne correspond pas à l'agence du véhicule (${vehicule.agence_id})`);
       return res.status(400).json({ message: "L'agence source ne correspond pas à l'agence du véhicule" });
     }
+
     const result = await transfertModel.createTransfert(value);
-    
+    console.log("Transfert créé avec succès, ID:", result.insertId);
 
     const updatedVehicule = {
       immatriculation: vehicule.immatriculation,
@@ -83,26 +92,42 @@ const createTransfert = async (req, res) => {
 };
 
 const updateTransfert = async (req, res) => {
+  const id = req.params.id;
+  console.log(`Action: Mise à jour du transfert avec ID ${id}, données:`, req.body);
+
   const { error, value } = transfertSchema.validate(req.body);
-  if (error) return res.status(400).json({ error: error.details[0].message });
+  if (error) {
+    console.log('Erreur de validation:', error.details[0].message);
+    return res.status(400).json({ error: error.details[0].message });
+  }
 
   try {
-    const result = await transfertModel.updateTransfert(value, req.params.id);
-    if (result.affectedRows === 0) return res.status(404).json({ error: 'Transfert introuvable ou déjà supprimé' });
+    const result = await transfertModel.updateTransfert(value, id);
+    if (result.affectedRows === 0) {
+      console.log(`Transfert avec ID ${id} introuvable ou déjà supprimé`);
+      return res.status(404).json({ error: 'Transfert introuvable ou déjà supprimé' });
+    }
+    console.log(`Transfert avec ID ${id} mis à jour avec succès`);
     res.status(200).json({ message: 'Transfert mis à jour' });
   } catch (err) {
-    console.error(err);
+    console.error(`Erreur lors de la mise à jour du transfert avec ID ${id}:`, err);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 };
 
 const deleteTransfert = async (req, res) => {
+  const id = req.params.id;
+  console.log(`Action: Suppression du transfert avec ID ${id}`);
   try {
-    const result = await transfertModel.deleteTransfert(req.params.id);
-    if (result.affectedRows === 0) return res.status(404).json({ error: 'Transfert introuvable ou déjà supprimé' });
+    const result = await transfertModel.deleteTransfert(id);
+    if (result.affectedRows === 0) {
+      console.log(`Transfert avec ID ${id} introuvable ou déjà supprimé`);
+      return res.status(404).json({ error: 'Transfert introuvable ou déjà supprimé' });
+    }
+    console.log(`Transfert avec ID ${id} supprimé avec succès`);
     res.status(200).json({ message: 'Transfert supprimé' });
   } catch (err) {
-    console.error(err);
+    console.error(`Erreur lors de la suppression du transfert avec ID ${id}:`, err);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 };
