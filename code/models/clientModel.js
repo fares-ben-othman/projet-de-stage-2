@@ -9,11 +9,11 @@ const getClientById = (id) => {
 };
 
 const getClientByEmail = (email) =>{
-    return pool.query("SELECT * FROM clients WHERE is_deleted = False AND email = ? ",[email]);
+    return pool.query("SELECT * FROM clients WHERE email = ? ",[email]);
 };
 
 const getClientByCin = (cin) => {
-    return pool.query("SELECT * FROM clients WHERE is_deleted = FALSE AND cin = ?", [cin]);
+    return pool.query("SELECT * FROM clients WHERE cin = ?", [cin]);
 };
 const createClient =(data) => {
     const { nom,prenom,email,telephone,cin} = data;

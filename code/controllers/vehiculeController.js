@@ -41,6 +41,13 @@ const createVehicule = async (req, res) => {
   }
 
   try {
+    
+    const [rows] = await vehiculeModel.getVehiculeByImmatriculation(data.immatriculation);
+    if (rows.length > 0) {
+      console.log(`Immatriculation ${data.immatriculation} déjà utilisée`);
+      return res.status(400).json({ message: "Immatriculation déjà utilisée" });
+    }
+
     const [result] = await vehiculeModel.createVehicule(data);
     console.log("Véhicule créé avec succès, ID:", result.insertId);
     res.status(201).json({ message: "Vehicle created", id: result.insertId });
@@ -49,7 +56,6 @@ const createVehicule = async (req, res) => {
     res.status(500).json({ message: "Failed to create vehicle" });
   }
 };
-
 const updateVehicule = async (req, res) => {
   const id = req.params.id;
   console.log(`Action: Mise à jour du véhicule avec ID ${id}, données:`, req.body);
@@ -62,11 +68,21 @@ const updateVehicule = async (req, res) => {
   }
 
   try {
+    
+    if (data.immatriculation) {
+      const [rows] = await vehiculeModel.getVehiculeByImmatriculation(data.immatriculation);
+      if (rows.length > 0 && Number(rows[0].id) !== Number(id)) {
+        console.log(`Immatriculation ${data.immatriculation} déjà utilisée par un autre véhicule`);
+        return res.status(400).json({ message: "Immatriculation déjà utilisée" });
+      }
+    }
+
     const [result] = await vehiculeModel.updateVehicule(data, id);
     if (result.affectedRows === 0) {
       console.log(`Véhicule avec ID ${id} introuvable`);
       return res.status(404).json({ message: "Vehicle not found" });
     }
+
     console.log(`Véhicule avec ID ${id} mis à jour avec succès`);
     res.status(200).json({ message: "Vehicle updated" });
   } catch (error) {

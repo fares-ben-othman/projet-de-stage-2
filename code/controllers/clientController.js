@@ -55,7 +55,6 @@ const createClient = async (req, res) => {
             return res.status(400).json({ error: 'Email déjà utilisé' });
         }
     }
-
     
     if (req.body.cin) {
         const [rows] = await clientModel.getClientByCin(req.body.cin);
@@ -80,7 +79,7 @@ const updateClient = async (req, res) => {
     console.log(`Action: Mise à jour du client avec ID ${id}`);
 
     const client = await findClient(id, res);
-    if (!client) return;
+    if (!client) return; // Si le client n'existe pas, on stoppe l'exécution
 
     const { error } = clientSchema.validate(req.body);
     if (error) {
@@ -88,25 +87,27 @@ const updateClient = async (req, res) => {
         return res.status(400).json({ error: error.details[0].message });
     }
 
-    
-    if (req.body.email) {
-        const [rows] = await clientModel.getClientByEmail(req.body.email);
-        if (rows.length > 0 && rows[0].id != id) {
-            console.log(`Email ${req.body.email} déjà utilisé par un autre client`);
-            return res.status(400).json({ error: 'Email déjà utilisé' });
-        }
-    }
-
-    
-    if (req.body.cin) {
-        const [rows] = await clientModel.getClientByCin(req.body.cin);
-        if (rows.length > 0 && rows[0].id != id) {
-            console.log(`CIN ${req.body.cin} déjà utilisé par un autre client`);
-            return res.status(400).json({ error: 'CIN déjà utilisé' });
-        }
-    }
-
     try {
+        
+        if (req.body.email) {
+            const [emailRows] = await clientModel.getClientByEmail(req.body.email);
+            console.log(emailRows);
+            if (emailRows.length > 0 && Number(emailRows[0].id) !== Number(id)) {
+                console.log(`Email ${req.body.email} déjà utilisé par un autre client`);
+                return res.status(400).json({ error: 'Email déjà utilisé' });
+            }
+        }
+
+        
+        if (req.body.cin) {
+            const [cinRows] = await clientModel.getClientByCin(req.body.cin);
+            console.log(cinRows);
+            if (cinRows.length > 0 && Number(cinRows[0].id) !== Number(id)) {
+                console.log(`CIN ${req.body.cin} déjà utilisé par un autre client`);
+                return res.status(400).json({ error: 'CIN déjà utilisé' });
+            }
+        }
+
         await clientModel.updateClient(req.body, id);
         console.log(`Client avec ID ${id} mis à jour avec succès:`, req.body);
         res.status(200).json({ message: 'Client mis à jour avec succès' });
@@ -115,6 +116,7 @@ const updateClient = async (req, res) => {
         res.status(500).json({ error: 'Erreur lors de la mise à jour du client' });
     }
 };
+
 
 const deleteClient = async (req, res) => {
     const { id } = req.params;

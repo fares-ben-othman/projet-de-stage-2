@@ -7,7 +7,9 @@ const getAllVehicules = () => {
 const getVehiculeById = (id) => {
   return pool.query('SELECT * FROM vehicules WHERE id = ? AND is_deleted = FALSE', [id]);
 };
-
+const getVehiculeByImmatriculation = (immatriculation) => {
+  return pool.query("SELECT * FROM vehicules WHERE  immatriculation = ?", [immatriculation]);
+};
 const createVehicule = (vehicule) => {
   const {
     immatriculation,
@@ -57,6 +59,7 @@ const deleteVehicule = (id) => {
 module.exports = {
   getAllVehicules,
   getVehiculeById,
+  getVehiculeByImmatriculation,
   createVehicule,
   updateVehicule,
   deleteVehicule
