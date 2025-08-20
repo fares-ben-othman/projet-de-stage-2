@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middlewares/auth');
 
 const agenceController = require('../controllers/agenceController');
 
@@ -16,18 +17,22 @@ const agenceController = require('../controllers/agenceController');
  *   get:
  *     tags: [Agences]
  *     summary: Récupérer toutes les agences
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Liste des agences
  */
-router.get('/get-all', agenceController.getAllAgences);
+router.get('/get-all', auth, agenceController.getAllAgences);
 
 /**
  * @swagger
- * /agences/getById/{id}:
+ * /agences/getAgenceById/{id}:
  *   get:
  *     tags: [Agences]
  *     summary: Récupérer une agence par ID
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -40,7 +45,7 @@ router.get('/get-all', agenceController.getAllAgences);
  *       404:
  *         description: Agence non trouvée
  */
-router.get('/getById/:id', agenceController.getAgenceById);
+router.get('/getAgenceById/:id', auth, agenceController.getAgenceById);
 
 /**
  * @swagger
@@ -48,6 +53,8 @@ router.get('/getById/:id', agenceController.getAgenceById);
  *   post:
  *     tags: [Agences]
  *     summary: Ajouter une nouvelle agence
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -69,7 +76,7 @@ router.get('/getById/:id', agenceController.getAgenceById);
  *       201:
  *         description: Agence créée
  */
-router.post('/create', agenceController.createAgence);
+router.post('/create', auth, agenceController.createAgence);
 
 /**
  * @swagger
@@ -77,6 +84,8 @@ router.post('/create', agenceController.createAgence);
  *   put:
  *     tags: [Agences]
  *     summary: Mettre à jour une agence existante
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -104,7 +113,7 @@ router.post('/create', agenceController.createAgence);
  *       200:
  *         description: Agence mise à jour
  */
-router.put('/update/:id', agenceController.updateAgence);
+router.put('/update/:id', auth, agenceController.updateAgence);
 
 /**
  * @swagger
@@ -112,6 +121,8 @@ router.put('/update/:id', agenceController.updateAgence);
  *   delete:
  *     tags: [Agences]
  *     summary: Supprimer une agence
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -122,7 +133,8 @@ router.put('/update/:id', agenceController.updateAgence);
  *       200:
  *         description: Agence supprimée
  */
-router.delete('/delete/:id', agenceController.deleteAgence);
+router.delete('/delete/:id', auth, agenceController.deleteAgence);
 
 module.exports = router;
+
 

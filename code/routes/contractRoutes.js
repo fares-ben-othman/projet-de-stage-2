@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middlewares/auth');
 
 const contractController = require('../controllers/contractController');
 
@@ -16,18 +17,22 @@ const contractController = require('../controllers/contractController');
  *   get:
  *     tags: [Contracts]
  *     summary: Récupérer tous les contrats
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Liste des contrats
  */
-router.get('/get-all', contractController.getAllContracts);
+router.get('/get-all', auth, contractController.getAllContracts);
 
 /**
  * @swagger
- * /contracts/getById/{id}:
+ * /contracts/getContractById/{id}:
  *   get:
  *     tags: [Contracts]
  *     summary: Récupérer un contrat par ID
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -40,7 +45,7 @@ router.get('/get-all', contractController.getAllContracts);
  *       404:
  *         description: Contrat non trouvé
  */
-router.get('/getById/:id', contractController.getContractById);
+router.get('/getContractById/:id', auth, contractController.getContractById);
 
 /**
  * @swagger
@@ -48,6 +53,8 @@ router.get('/getById/:id', contractController.getContractById);
  *   post:
  *     tags: [Contracts]
  *     summary: Ajouter un nouveau contrat
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -100,7 +107,7 @@ router.get('/getById/:id', contractController.getContractById);
  *       500:
  *         description: Erreur serveur
  */
-router.post('/create', contractController.createContract);
+router.post('/create', auth, contractController.createContract);
 
 /**
  * @swagger
@@ -108,6 +115,8 @@ router.post('/create', contractController.createContract);
  *   put:
  *     tags: [Contracts]
  *     summary: Mettre à jour un contrat existant
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -161,7 +170,7 @@ router.post('/create', contractController.createContract);
  *       500:
  *         description: Erreur serveur
  */
-router.put('/update/:id', contractController.updateContract);
+router.put('/update/:id', auth, contractController.updateContract);
 
 /**
  * @swagger
@@ -169,6 +178,8 @@ router.put('/update/:id', contractController.updateContract);
  *   delete:
  *     tags: [Contracts]
  *     summary: Supprimer un contrat
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -183,6 +194,6 @@ router.put('/update/:id', contractController.updateContract);
  *       500:
  *         description: Erreur serveur
  */
-router.delete('/delete/:id', contractController.deleteContract);
+router.delete('/delete/:id', auth, contractController.deleteContract);
 
 module.exports = router;

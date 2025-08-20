@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middlewares/auth');
 
 const financeController = require('../controllers/financeController');
 
@@ -16,18 +17,22 @@ const financeController = require('../controllers/financeController');
  *   get:
  *     tags: [Finances]
  *     summary: Récupérer toutes les opérations financières
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Liste des finances
  */
-router.get('/get-all', financeController.getAllFinances);
+router.get('/get-all', auth, financeController.getAllFinances);
 
 /**
  * @swagger
- * /finances/getById/{id}:
+ * /finances/getFinanceById/{id}:
  *   get:
  *     tags: [Finances]
  *     summary: Récupérer une opération financière par ID
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -40,7 +45,7 @@ router.get('/get-all', financeController.getAllFinances);
  *       404:
  *         description: Opération non trouvée
  */
-router.get('/getById/:id', financeController.getFinanceById);
+router.get('/getFinanceById/:id', auth, financeController.getFinanceById);
 
 /**
  * @swagger
@@ -48,6 +53,8 @@ router.get('/getById/:id', financeController.getFinanceById);
  *   post:
  *     tags: [Finances]
  *     summary: Ajouter une nouvelle opération financière
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -76,7 +83,7 @@ router.get('/getById/:id', financeController.getFinanceById);
  *       201:
  *         description: Opération créée
  */
-router.post('/create', financeController.createFinance);
+router.post('/create', auth, financeController.createFinance);
 
 /**
  * @swagger
@@ -84,6 +91,8 @@ router.post('/create', financeController.createFinance);
  *   put:
  *     tags: [Finances]
  *     summary: Mettre à jour une opération financière
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -118,7 +127,7 @@ router.post('/create', financeController.createFinance);
  *       200:
  *         description: Opération mise à jour
  */
-router.put('/update/:id', financeController.updateFinance);
+router.put('/update/:id', auth, financeController.updateFinance);
 
 /**
  * @swagger
@@ -126,6 +135,8 @@ router.put('/update/:id', financeController.updateFinance);
  *   delete:
  *     tags: [Finances]
  *     summary: Supprimer une opération financière
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -136,6 +147,6 @@ router.put('/update/:id', financeController.updateFinance);
  *       200:
  *         description: Opération supprimée
  */
-router.delete('/delete/:id', financeController.deleteFinance);
+router.delete('/delete/:id', auth, financeController.deleteFinance);
 
 module.exports = router;

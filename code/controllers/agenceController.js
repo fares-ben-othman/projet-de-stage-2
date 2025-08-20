@@ -36,7 +36,7 @@ const getAllAgences = async (req, res) => {
 const getAgenceById = async (req, res) => {
     const { id } = req.params;
     console.log(`Action: Récupération de l'agence avec ID ${id}`);
-    const agence = await findAgenceOr404(id, res);
+    const agence = await findAgence(id, res);
     if (!agence) return;
     res.status(200).json(agence);
 };

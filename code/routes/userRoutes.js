@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const userController = require('../controllers/userController');
+const auth = require('../middlewares/auth');
 
 /**
  * @swagger
@@ -16,18 +17,22 @@ const userController = require('../controllers/userController');
  *   get:
  *     tags: [Users]
  *     summary: Récupérer tous les utilisateurs
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Liste des utilisateurs
  */
-router.get('/get-all', userController.getAllUsers);
+router.get('/get-all', auth, userController.getAllUsers);
 
 /**
  * @swagger
- * /users/get/{id}:
+ * /users/getUserById/{id}:
  *   get:
  *     tags: [Users]
  *     summary: Récupérer un utilisateur par ID
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -40,7 +45,7 @@ router.get('/get-all', userController.getAllUsers);
  *       404:
  *         description: Utilisateur non trouvé
  */
-router.get('/get/:id', userController.getUser);
+router.get('/getUserById/:id', auth, userController.getUserById);
 
 /**
  * @swagger
@@ -57,16 +62,12 @@ router.get('/get/:id', userController.getUser);
  *             properties:
  *               nom:
  *                 type: string
- *                 example: Jean Dupont
  *               email:
  *                 type: string
- *                 example: jean.dupont@example.com
  *               mot_de_passe:
  *                 type: string
- *                 example: Password123!
  *               agence_id:
  *                 type: integer
- *                 example: 1
  *     responses:
  *       201:
  *         description: Utilisateur créé
@@ -90,10 +91,8 @@ router.post('/register', userController.register);
  *             properties:
  *               email:
  *                 type: string
- *                 example: jean.dupont@example.com
  *               mot_de_passe:
  *                 type: string
- *                 example: Password123!
  *     responses:
  *       200:
  *         description: Login réussi avec token JWT
@@ -110,6 +109,8 @@ router.post('/login', userController.login);
  *   put:
  *     tags: [Users]
  *     summary: Mettre à jour un utilisateur existant
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -142,7 +143,7 @@ router.post('/login', userController.login);
  *       404:
  *         description: Utilisateur non trouvé
  */
-router.put('/update/:id', userController.updateUser);
+router.put('/update/:id', auth, userController.updateUser);
 
 /**
  * @swagger
@@ -150,6 +151,8 @@ router.put('/update/:id', userController.updateUser);
  *   delete:
  *     tags: [Users]
  *     summary: Supprimer un utilisateur 
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -162,8 +165,6 @@ router.put('/update/:id', userController.updateUser);
  *       404:
  *         description: Utilisateur non trouvé
  */
-router.delete('/delete/:id', userController.deleteUser);
+router.delete('/delete/:id', auth, userController.deleteUser);
 
 module.exports = router;
-
-

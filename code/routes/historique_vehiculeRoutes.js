@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middlewares/auth');
 const historiqueController = require('../controllers/historique_vehiculeController');
 
 /**
@@ -15,6 +16,8 @@ const historiqueController = require('../controllers/historique_vehiculeControll
  *   get:
  *     summary: Récupérer tous les historiques de véhicules
  *     tags: [HistoriqueVehicule]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Liste des historiques
@@ -39,7 +42,7 @@ const historiqueController = require('../controllers/historique_vehiculeControll
  *                   utilisateur_id:
  *                     type: integer
  */
-router.get('/get-all', historiqueController.getAllHistoriques);
+router.get('/get-all', auth, historiqueController.getAllHistoriques);
 
 /**
  * @swagger
@@ -47,6 +50,8 @@ router.get('/get-all', historiqueController.getAllHistoriques);
  *   get:
  *     summary: Récupérer l'historique d'un véhicule par son ID
  *     tags: [HistoriqueVehicule]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: vehiculeId
@@ -80,7 +85,7 @@ router.get('/get-all', historiqueController.getAllHistoriques);
  *       400:
  *         description: ID du véhicule invalide
  */
-router.get('/getByVehiculeId/:vehiculeId', historiqueController.getHistoriqueByVehiculeId);
+router.get('/getByVehiculeId/:vehiculeId', auth, historiqueController.getHistoriqueByVehiculeId);
 
 /**
  * @swagger
@@ -88,6 +93,8 @@ router.get('/getByVehiculeId/:vehiculeId', historiqueController.getHistoriqueByV
  *   post:
  *     summary: Ajouter un nouvel historique véhicule
  *     tags: [HistoriqueVehicule]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -125,6 +132,6 @@ router.get('/getByVehiculeId/:vehiculeId', historiqueController.getHistoriqueByV
  *       400:
  *         description: Erreur de validation des données
  */
-router.post('/create', historiqueController.createHistorique);
+router.post('/create', auth, historiqueController.createHistorique);
 
 module.exports = router;

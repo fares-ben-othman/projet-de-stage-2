@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const auth = require('../middlewares/auth');
 const vehiculeController = require('../controllers/vehiculeController');
 
 /**
@@ -16,18 +16,22 @@ const vehiculeController = require('../controllers/vehiculeController');
  *   get:
  *     tags: [Vehicules]
  *     summary: Récupérer tous les véhicules
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Liste des véhicules
  */
-router.get('/get-all', vehiculeController.getAllVehicules);
+router.get('/get-all', auth, vehiculeController.getAllVehicules);
 
 /**
  * @swagger
- * /vehicules/getById/{id}:
+ * /vehicules/getVehiculeById/{id}:
  *   get:
  *     tags: [Vehicules]
  *     summary: Récupérer un véhicule par ID
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -40,7 +44,7 @@ router.get('/get-all', vehiculeController.getAllVehicules);
  *       404:
  *         description: Véhicule non trouvé
  */
-router.get('/getById/:id', vehiculeController.getVehiculeById);
+router.get('/getVehiculeById/:id', auth, vehiculeController.getVehiculeById);
 
 /**
  * @swagger
@@ -48,6 +52,8 @@ router.get('/getById/:id', vehiculeController.getVehiculeById);
  *   post:
  *     tags: [Vehicules]
  *     summary: Ajouter un nouveau véhicule
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -77,7 +83,7 @@ router.get('/getById/:id', vehiculeController.getVehiculeById);
  *       201:
  *         description: Véhicule créé
  */
-router.post('/create', vehiculeController.createVehicule);
+router.post('/create', auth, vehiculeController.createVehicule);
 
 /**
  * @swagger
@@ -85,6 +91,8 @@ router.post('/create', vehiculeController.createVehicule);
  *   put:
  *     tags: [Vehicules]
  *     summary: Mettre à jour un véhicule existant
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -120,7 +128,7 @@ router.post('/create', vehiculeController.createVehicule);
  *       200:
  *         description: Véhicule mis à jour
  */
-router.put('/update/:id', vehiculeController.updateVehicule);
+router.put('/update/:id', auth, vehiculeController.updateVehicule);
 
 /**
  * @swagger
@@ -128,6 +136,8 @@ router.put('/update/:id', vehiculeController.updateVehicule);
  *   delete:
  *     tags: [Vehicules]
  *     summary: Supprimer un véhicule
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -138,6 +148,6 @@ router.put('/update/:id', vehiculeController.updateVehicule);
  *       200:
  *         description: Véhicule supprimé
  */
-router.delete('/delete/:id', vehiculeController.deleteVehicule);
+router.delete('/delete/:id', auth, vehiculeController.deleteVehicule);
 
 module.exports = router;

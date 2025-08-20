@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const roles = ['admin', 'chef_agence', 'agent'];
 
-const utilisateurCreateSchema = Joi.object({
+const userCreateSchema = Joi.object({
   nom: Joi.string().max(100).required(),
   email: Joi.string().email().max(100).required(),
   mot_de_passe: Joi.string().min(8).max(255).required(), 
@@ -10,7 +10,7 @@ const utilisateurCreateSchema = Joi.object({
   is_active: Joi.boolean().default(true),
 });
 
-const utilisateurUpdateSchema = Joi.object({
+const userUpdateSchema = Joi.object({
   nom: Joi.string().max(100),
   email: Joi.string().email().max(100),
   mot_de_passe: Joi.string().min(8).max(255),           
@@ -24,5 +24,5 @@ const loginSchema = Joi.object({
   mot_de_passe: Joi.string().required()
 });
 
-module.exports = { utilisateurCreateSchema, utilisateurUpdateSchema, loginSchema };
+module.exports = { userCreateSchema, userUpdateSchema, loginSchema };
 

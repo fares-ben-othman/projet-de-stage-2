@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middlewares/auth');
 
 const clientController = require('../controllers/clientController');
 
@@ -16,18 +17,22 @@ const clientController = require('../controllers/clientController');
  *   get:
  *     tags: [Clients]
  *     summary: Récupérer tous les clients
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Liste des clients
  */
-router.get('/get-all', clientController.getAllClients);
+router.get('/get-all', auth, clientController.getAllClients);
 
 /**
  * @swagger
- * /clients/getById/{id}:
+ * /clients/getClientById/{id}:
  *   get:
  *     tags: [Clients]
  *     summary: Récupérer un client par ID
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -40,7 +45,7 @@ router.get('/get-all', clientController.getAllClients);
  *       404:
  *         description: Client non trouvé
  */
-router.get('/getById/:id', clientController.getClientById);
+router.get('/getClientById/:id', auth, clientController.getClientById);
 
 /**
  * @swagger
@@ -48,6 +53,8 @@ router.get('/getById/:id', clientController.getClientById);
  *   post:
  *     tags: [Clients]
  *     summary: Ajouter un nouveau client
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -69,7 +76,7 @@ router.get('/getById/:id', clientController.getClientById);
  *       201:
  *         description: Client créé
  */
-router.post('/create', clientController.createClient);
+router.post('/create', auth, clientController.createClient);
 
 /**
  * @swagger
@@ -77,6 +84,8 @@ router.post('/create', clientController.createClient);
  *   put:
  *     tags: [Clients]
  *     summary: Mettre à jour un client existant
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -104,7 +113,7 @@ router.post('/create', clientController.createClient);
  *       200:
  *         description: Client mis à jour
  */
-router.put('/update/:id', clientController.updateClient);
+router.put('/update/:id', auth, clientController.updateClient);
 
 /**
  * @swagger
@@ -112,6 +121,8 @@ router.put('/update/:id', clientController.updateClient);
  *   delete:
  *     tags: [Clients]
  *     summary: Supprimer un client
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -122,6 +133,6 @@ router.put('/update/:id', clientController.updateClient);
  *       200:
  *         description: Client supprimé
  */
-router.delete('/delete/:id', clientController.deleteClient);
+router.delete('/delete/:id', auth, clientController.deleteClient);
 
 module.exports = router;

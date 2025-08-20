@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const auth = require('../middlewares/auth');
 const interventionController = require('../controllers/interventionController');
 
 /**
@@ -16,18 +16,22 @@ const interventionController = require('../controllers/interventionController');
  *   get:
  *     tags: [Interventions]
  *     summary: Récupérer toutes les interventions
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Liste des interventions
  */
-router.get('/get-all', interventionController.getAllInterventions);
+router.get('/get-all', auth, interventionController.getAllInterventions);
 
 /**
  * @swagger
- * /interventions/getById/{id}:
+ * /interventions/getInterventionById/{id}:
  *   get:
  *     tags: [Interventions]
  *     summary: Récupérer une intervention par ID
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -40,7 +44,7 @@ router.get('/get-all', interventionController.getAllInterventions);
  *       404:
  *         description: Intervention non trouvée
  */
-router.get('/getById/:id', interventionController.getInterventionById);
+router.get('/getInterventionById/:id', auth, interventionController.getInterventionById);
 
 /**
  * @swagger
@@ -48,6 +52,8 @@ router.get('/getById/:id', interventionController.getInterventionById);
  *   post:
  *     tags: [Interventions]
  *     summary: Ajouter une nouvelle intervention
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -85,7 +91,7 @@ router.get('/getById/:id', interventionController.getInterventionById);
  *       400:
  *         description: Erreur de validation
  */
-router.post('/create', interventionController.createIntervention);
+router.post('/create', auth, interventionController.createIntervention);
 
 /**
  * @swagger
@@ -93,6 +99,8 @@ router.post('/create', interventionController.createIntervention);
  *   put:
  *     tags: [Interventions]
  *     summary: Mettre à jour une intervention existante
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -133,7 +141,7 @@ router.post('/create', interventionController.createIntervention);
  *       404:
  *         description: Intervention non trouvée
  */
-router.put('/update/:id', interventionController.updateIntervention);
+router.put('/update/:id', auth, interventionController.updateIntervention);
 
 /**
  * @swagger
@@ -141,6 +149,8 @@ router.put('/update/:id', interventionController.updateIntervention);
  *   delete:
  *     tags: [Interventions]
  *     summary: Supprimer une intervention 
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -153,6 +163,6 @@ router.put('/update/:id', interventionController.updateIntervention);
  *       404:
  *         description: Intervention non trouvée
  */
-router.delete('/delete/:id', interventionController.deleteIntervention);
+router.delete('/delete/:id', auth, interventionController.deleteIntervention);
 
 module.exports = router;

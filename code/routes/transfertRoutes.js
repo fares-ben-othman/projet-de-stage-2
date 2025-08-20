@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const auth = require('../middlewares/auth');
 const transfertController = require('../controllers/transfertController');
 
 /**
@@ -16,18 +16,22 @@ const transfertController = require('../controllers/transfertController');
  *   get:
  *     tags: [Transfert]
  *     summary: Récupérer tous les transferts
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Liste des transferts
  */
-router.get('/get-all', transfertController.getAllTransferts);
+router.get('/get-all', auth, transfertController.getAllTransferts);
 
 /**
  * @swagger
- * /transfert/getById/{id}:
+ * /transfert/getTransfertById/{id}:
  *   get:
  *     tags: [Transfert]
  *     summary: Récupérer un transfert par ID
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -40,7 +44,7 @@ router.get('/get-all', transfertController.getAllTransferts);
  *       404:
  *         description: Transfert non trouvé
  */
-router.get('/getById/:id', transfertController.getTransfertById);
+router.get('/getTransfertById/:id', auth, transfertController.getTransfertById);
 
 /**
  * @swagger
@@ -48,6 +52,8 @@ router.get('/getById/:id', transfertController.getTransfertById);
  *   post:
  *     tags: [Transfert]
  *     summary: Créer un nouveau transfert
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -77,7 +83,7 @@ router.get('/getById/:id', transfertController.getTransfertById);
  *       201:
  *         description: Transfert créé
  */
-router.post('/create', transfertController.createTransfert);
+router.post('/create', auth, transfertController.createTransfert);
 
 /**
  * @swagger
@@ -85,6 +91,8 @@ router.post('/create', transfertController.createTransfert);
  *   put:
  *     tags: [Transfert]
  *     summary: Mettre à jour un transfert existant
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -116,7 +124,7 @@ router.post('/create', transfertController.createTransfert);
  *       404:
  *         description: Transfert non trouvé
  */
-router.put('/update/:id', transfertController.updateTransfert);
+router.put('/update/:id', auth, transfertController.updateTransfert);
 
 /**
  * @swagger
@@ -124,6 +132,8 @@ router.put('/update/:id', transfertController.updateTransfert);
  *   delete:
  *     tags: [Transfert]
  *     summary: Supprimer un transfert
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -136,6 +146,6 @@ router.put('/update/:id', transfertController.updateTransfert);
  *       404:
  *         description: Transfert non trouvé
  */
-router.delete('/delete/:id', transfertController.deleteTransfert);
+router.delete('/delete/:id', auth, transfertController.deleteTransfert);
 
 module.exports = router;
