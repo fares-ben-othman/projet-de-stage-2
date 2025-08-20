@@ -140,7 +140,7 @@ router.put('/update/:id', interventionController.updateIntervention);
  * /interventions/delete/{id}:
  *   delete:
  *     tags: [Interventions]
- *     summary: Supprimer une intervention (soft delete)
+ *     summary: Supprimer une intervention 
  *     parameters:
  *       - in: path
  *         name: id
