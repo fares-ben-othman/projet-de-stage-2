@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth');
+const { requireRoles } = require('../middlewares/roles');
 const interventionController = require('../controllers/interventionController');
 
 /**
@@ -22,7 +23,7 @@ const interventionController = require('../controllers/interventionController');
  *       200:
  *         description: Liste des interventions
  */
-router.get('/get-all', auth, interventionController.getAllInterventions);
+router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent'), interventionController.getAllInterventions);
 
 /**
  * @swagger
@@ -44,7 +45,7 @@ router.get('/get-all', auth, interventionController.getAllInterventions);
  *       404:
  *         description: Intervention non trouvée
  */
-router.get('/getInterventionById/:id', auth, interventionController.getInterventionById);
+router.get('/getInterventionById/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), interventionController.getInterventionById);
 
 /**
  * @swagger
@@ -91,7 +92,7 @@ router.get('/getInterventionById/:id', auth, interventionController.getIntervent
  *       400:
  *         description: Erreur de validation
  */
-router.post('/create', auth, interventionController.createIntervention);
+router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), interventionController.createIntervention);
 
 /**
  * @swagger
@@ -141,7 +142,7 @@ router.post('/create', auth, interventionController.createIntervention);
  *       404:
  *         description: Intervention non trouvée
  */
-router.put('/update/:id', auth, interventionController.updateIntervention);
+router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), interventionController.updateIntervention);
 
 /**
  * @swagger
@@ -163,6 +164,6 @@ router.put('/update/:id', auth, interventionController.updateIntervention);
  *       404:
  *         description: Intervention non trouvée
  */
-router.delete('/delete/:id', auth, interventionController.deleteIntervention);
+router.delete('/delete/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), interventionController.deleteIntervention);
 
 module.exports = router;

@@ -9,7 +9,7 @@ function auth(req, res, next) {
   }
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET || 'dev_secret');
+    const payload = jwt.verify(token, process.env.JWT_SECRET );
     req.user = payload;
     next();
   } catch (e) {

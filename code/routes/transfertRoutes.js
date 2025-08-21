@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth');
+const { requireRoles } = require('../middlewares/roles');
 const transfertController = require('../controllers/transfertController');
 
 /**
@@ -22,7 +23,7 @@ const transfertController = require('../controllers/transfertController');
  *       200:
  *         description: Liste des transferts
  */
-router.get('/get-all', auth, transfertController.getAllTransferts);
+router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent'), transfertController.getAllTransferts);
 
 /**
  * @swagger
@@ -44,7 +45,7 @@ router.get('/get-all', auth, transfertController.getAllTransferts);
  *       404:
  *         description: Transfert non trouvé
  */
-router.get('/getTransfertById/:id', auth, transfertController.getTransfertById);
+router.get('/getTransfertById/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), transfertController.getTransfertById);
 
 /**
  * @swagger
@@ -83,7 +84,7 @@ router.get('/getTransfertById/:id', auth, transfertController.getTransfertById);
  *       201:
  *         description: Transfert créé
  */
-router.post('/create', auth, transfertController.createTransfert);
+router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), transfertController.createTransfert);
 
 /**
  * @swagger
@@ -124,7 +125,7 @@ router.post('/create', auth, transfertController.createTransfert);
  *       404:
  *         description: Transfert non trouvé
  */
-router.put('/update/:id', auth, transfertController.updateTransfert);
+router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), transfertController.updateTransfert);
 
 /**
  * @swagger
@@ -146,6 +147,6 @@ router.put('/update/:id', auth, transfertController.updateTransfert);
  *       404:
  *         description: Transfert non trouvé
  */
-router.delete('/delete/:id', auth, transfertController.deleteTransfert);
+router.delete('/delete/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), transfertController.deleteTransfert);
 
 module.exports = router;

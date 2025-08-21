@@ -3,7 +3,7 @@ const router = express.Router();
 
 const userController = require('../controllers/userController');
 const auth = require('../middlewares/auth');
-
+const { requireRoles } = require('../middlewares/roles');
 /**
  * @swagger
  * tags:
@@ -23,7 +23,7 @@ const auth = require('../middlewares/auth');
  *       200:
  *         description: Liste des utilisateurs
  */
-router.get('/get-all', auth, userController.getAllUsers);
+router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent'), userController.getAllUsers);
 
 /**
  * @swagger
@@ -45,7 +45,7 @@ router.get('/get-all', auth, userController.getAllUsers);
  *       404:
  *         description: Utilisateur non trouvé
  */
-router.get('/getUserById/:id', auth, userController.getUserById);
+router.get('/getUserById/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), userController.getUserById);
 
 /**
  * @swagger
@@ -143,7 +143,7 @@ router.post('/login', userController.login);
  *       404:
  *         description: Utilisateur non trouvé
  */
-router.put('/update/:id', auth, userController.updateUser);
+router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), userController.updateUser);
 
 /**
  * @swagger
@@ -165,6 +165,6 @@ router.put('/update/:id', auth, userController.updateUser);
  *       404:
  *         description: Utilisateur non trouvé
  */
-router.delete('/delete/:id', auth, userController.deleteUser);
+router.delete('/delete/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), userController.deleteUser);
 
 module.exports = router;

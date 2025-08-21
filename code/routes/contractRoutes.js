@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth');
-
+const { requireRoles } = require('../middlewares/roles');
 const contractController = require('../controllers/contractController');
 
 /**
@@ -23,7 +23,7 @@ const contractController = require('../controllers/contractController');
  *       200:
  *         description: Liste des contrats
  */
-router.get('/get-all', auth, contractController.getAllContracts);
+router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent'), contractController.getAllContracts);
 
 /**
  * @swagger
@@ -45,7 +45,7 @@ router.get('/get-all', auth, contractController.getAllContracts);
  *       404:
  *         description: Contrat non trouvé
  */
-router.get('/getContractById/:id', auth, contractController.getContractById);
+router.get('/getContractById/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), contractController.getContractById);
 
 /**
  * @swagger
@@ -107,7 +107,7 @@ router.get('/getContractById/:id', auth, contractController.getContractById);
  *       500:
  *         description: Erreur serveur
  */
-router.post('/create', auth, contractController.createContract);
+router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), contractController.createContract);
 
 /**
  * @swagger
@@ -170,7 +170,7 @@ router.post('/create', auth, contractController.createContract);
  *       500:
  *         description: Erreur serveur
  */
-router.put('/update/:id', auth, contractController.updateContract);
+router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), contractController.updateContract);
 
 /**
  * @swagger
@@ -194,6 +194,6 @@ router.put('/update/:id', auth, contractController.updateContract);
  *       500:
  *         description: Erreur serveur
  */
-router.delete('/delete/:id', auth, contractController.deleteContract);
+router.delete('/delete/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), contractController.deleteContract);
 
 module.exports = router;

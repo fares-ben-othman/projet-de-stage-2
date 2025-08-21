@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth');
+const { requireRoles } = require('../middlewares/roles');
 const vehiculeController = require('../controllers/vehiculeController');
 
 /**
@@ -22,7 +23,7 @@ const vehiculeController = require('../controllers/vehiculeController');
  *       200:
  *         description: Liste des véhicules
  */
-router.get('/get-all', auth, vehiculeController.getAllVehicules);
+router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent'), vehiculeController.getAllVehicules);
 
 /**
  * @swagger
@@ -44,7 +45,7 @@ router.get('/get-all', auth, vehiculeController.getAllVehicules);
  *       404:
  *         description: Véhicule non trouvé
  */
-router.get('/getVehiculeById/:id', auth, vehiculeController.getVehiculeById);
+router.get('/getVehiculeById/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), vehiculeController.getVehiculeById);
 
 /**
  * @swagger
@@ -83,7 +84,7 @@ router.get('/getVehiculeById/:id', auth, vehiculeController.getVehiculeById);
  *       201:
  *         description: Véhicule créé
  */
-router.post('/create', auth, vehiculeController.createVehicule);
+router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), vehiculeController.createVehicule);
 
 /**
  * @swagger
@@ -128,7 +129,7 @@ router.post('/create', auth, vehiculeController.createVehicule);
  *       200:
  *         description: Véhicule mis à jour
  */
-router.put('/update/:id', auth, vehiculeController.updateVehicule);
+router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), vehiculeController.updateVehicule);
 
 /**
  * @swagger
@@ -148,6 +149,6 @@ router.put('/update/:id', auth, vehiculeController.updateVehicule);
  *       200:
  *         description: Véhicule supprimé
  */
-router.delete('/delete/:id', auth, vehiculeController.deleteVehicule);
+router.delete('/delete/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), vehiculeController.deleteVehicule);
 
 module.exports = router;

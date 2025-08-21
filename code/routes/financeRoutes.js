@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth');
-
+const { requireRoles } = require('../middlewares/roles');
 const financeController = require('../controllers/financeController');
 
 /**
@@ -23,7 +23,7 @@ const financeController = require('../controllers/financeController');
  *       200:
  *         description: Liste des finances
  */
-router.get('/get-all', auth, financeController.getAllFinances);
+router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent'), financeController.getAllFinances);
 
 /**
  * @swagger
@@ -45,7 +45,7 @@ router.get('/get-all', auth, financeController.getAllFinances);
  *       404:
  *         description: Opération non trouvée
  */
-router.get('/getFinanceById/:id', auth, financeController.getFinanceById);
+router.get('/getFinanceById/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), financeController.getFinanceById);
 
 /**
  * @swagger
@@ -83,7 +83,7 @@ router.get('/getFinanceById/:id', auth, financeController.getFinanceById);
  *       201:
  *         description: Opération créée
  */
-router.post('/create', auth, financeController.createFinance);
+router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), financeController.createFinance);
 
 /**
  * @swagger
@@ -127,7 +127,7 @@ router.post('/create', auth, financeController.createFinance);
  *       200:
  *         description: Opération mise à jour
  */
-router.put('/update/:id', auth, financeController.updateFinance);
+router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), financeController.updateFinance);
 
 /**
  * @swagger
@@ -147,6 +147,6 @@ router.put('/update/:id', auth, financeController.updateFinance);
  *       200:
  *         description: Opération supprimée
  */
-router.delete('/delete/:id', auth, financeController.deleteFinance);
+router.delete('/delete/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), financeController.deleteFinance);
 
 module.exports = router;

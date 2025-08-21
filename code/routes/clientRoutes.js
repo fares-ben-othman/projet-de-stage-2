@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth');
-
+const { requireRoles } = require('../middlewares/roles');
 const clientController = require('../controllers/clientController');
 
 /**
@@ -23,7 +23,7 @@ const clientController = require('../controllers/clientController');
  *       200:
  *         description: Liste des clients
  */
-router.get('/get-all', auth, clientController.getAllClients);
+router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent') , clientController.getAllClients);
 
 /**
  * @swagger
@@ -45,7 +45,7 @@ router.get('/get-all', auth, clientController.getAllClients);
  *       404:
  *         description: Client non trouvé
  */
-router.get('/getClientById/:id', auth, clientController.getClientById);
+router.get('/getClientById/:id', auth,requireRoles('admin', 'chef_agence', 'agent') , clientController.getClientById);
 
 /**
  * @swagger
@@ -76,7 +76,7 @@ router.get('/getClientById/:id', auth, clientController.getClientById);
  *       201:
  *         description: Client créé
  */
-router.post('/create', auth, clientController.createClient);
+router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent') , clientController.createClient);
 
 /**
  * @swagger
@@ -113,7 +113,7 @@ router.post('/create', auth, clientController.createClient);
  *       200:
  *         description: Client mis à jour
  */
-router.put('/update/:id', auth, clientController.updateClient);
+router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent') , clientController.updateClient);
 
 /**
  * @swagger
@@ -133,6 +133,6 @@ router.put('/update/:id', auth, clientController.updateClient);
  *       200:
  *         description: Client supprimé
  */
-router.delete('/delete/:id', auth, clientController.deleteClient);
+router.delete('/delete/:id', auth,requireRoles('admin', 'chef_agence', 'agent') , clientController.deleteClient);
 
 module.exports = router;

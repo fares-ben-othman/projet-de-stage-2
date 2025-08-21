@@ -1,7 +1,7 @@
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const { v4: uuidv4 } = require('uuid');
 const userModel = require('../models/userModel');
 const agenceModel = require('../models/agenceModel');
 const { userCreateSchema, userUpdateSchema, loginSchema } = require('../validators/userValidator');
@@ -99,36 +99,31 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  console.log("Action: Login:", req.body.email);
   const { error } = loginSchema.validate(req.body);
-  if (error) {
-    console.log('Validation login échouée:', error.details[0].message);
-    return res.status(400).json({ error: error.details[0].message });
-  }
+  if (error) return res.status(400).json({ error: error.details[0].message });
 
   const { email, mot_de_passe } = req.body;
   try {
     const [rows] = await userModel.getUserByEmail(email);
-    console.log('Résultat login:', rows.length);
     if (rows.length === 0) return res.status(401).json({ error: 'Identifiants invalides' });
 
     const user = rows[0];
-    if (user.is_deleted || !user.is_active) {
-      console.log('Compte inactif ou supprimé:', user.id);
+    if (user.is_deleted || !user.is_active)
       return res.status(403).json({ error: 'Compte inactif ou supprimé' });
-    }
 
     const ok = await bcrypt.compare(mot_de_passe, user.mot_de_passe);
-    console.log('Mot de passe correct:', ok);
     if (!ok) return res.status(401).json({ error: 'Identifiants invalides' });
 
-    const payload = { id: user.id, role: user.role, agence_id: user.agence_id };
-    const token = jwt.sign(payload, process.env.JWT_SECRET || 'dev_secret', {
+    
+    const uniqueId = uuidv4();
+
+    
+    const payload = { id: user.id, role: user.role, agence_id: user.agence_id, jti: uniqueId };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN || '1d',
     });
 
     await userModel.updateLastLogin(user.id);
-    console.log('Dernière connexion mise à jour pour user ID:', user.id);
 
     delete user.mot_de_passe;
     res.status(200).json({ token, user });
@@ -137,6 +132,7 @@ const login = async (req, res) => {
     res.status(500).json({ error: 'Erreur serveur' });
   }
 };
+
 
 const updateUser = async (req, res) => {
   const { id } = req.params;

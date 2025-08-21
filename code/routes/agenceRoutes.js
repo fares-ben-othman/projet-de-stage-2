@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth');
-
+const { requireRoles } = require('../middlewares/roles');
 const agenceController = require('../controllers/agenceController');
 
 /**
@@ -23,7 +23,7 @@ const agenceController = require('../controllers/agenceController');
  *       200:
  *         description: Liste des agences
  */
-router.get('/get-all', auth, agenceController.getAllAgences);
+router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent'), agenceController.getAllAgences);
 
 /**
  * @swagger
@@ -45,7 +45,7 @@ router.get('/get-all', auth, agenceController.getAllAgences);
  *       404:
  *         description: Agence non trouvée
  */
-router.get('/getAgenceById/:id', auth, agenceController.getAgenceById);
+router.get('/getAgenceById/:id', auth, requireRoles('admin', 'chef_agence', 'agent') ,agenceController.getAgenceById);
 
 /**
  * @swagger
@@ -76,7 +76,7 @@ router.get('/getAgenceById/:id', auth, agenceController.getAgenceById);
  *       201:
  *         description: Agence créée
  */
-router.post('/create', auth, agenceController.createAgence);
+router.post('/create', auth, requireRoles('admin', 'chef_agence', 'agent') , agenceController.createAgence);
 
 /**
  * @swagger
@@ -113,7 +113,7 @@ router.post('/create', auth, agenceController.createAgence);
  *       200:
  *         description: Agence mise à jour
  */
-router.put('/update/:id', auth, agenceController.updateAgence);
+router.put('/update/:id', auth, requireRoles('admin', 'chef_agence', 'agent') , agenceController.updateAgence);
 
 /**
  * @swagger
@@ -133,7 +133,7 @@ router.put('/update/:id', auth, agenceController.updateAgence);
  *       200:
  *         description: Agence supprimée
  */
-router.delete('/delete/:id', auth, agenceController.deleteAgence);
+router.delete('/delete/:id', auth, requireRoles('admin', 'chef_agence', 'agent') , agenceController.deleteAgence);
 
 module.exports = router;
 

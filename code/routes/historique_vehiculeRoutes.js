@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth');
+const { requireRoles } = require('../middlewares/roles');
 const historiqueController = require('../controllers/historique_vehiculeController');
 
 /**
@@ -42,7 +43,7 @@ const historiqueController = require('../controllers/historique_vehiculeControll
  *                   utilisateur_id:
  *                     type: integer
  */
-router.get('/get-all', auth, historiqueController.getAllHistoriques);
+router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent'), historiqueController.getAllHistoriques);
 
 /**
  * @swagger
@@ -85,7 +86,7 @@ router.get('/get-all', auth, historiqueController.getAllHistoriques);
  *       400:
  *         description: ID du véhicule invalide
  */
-router.get('/getByVehiculeId/:vehiculeId', auth, historiqueController.getHistoriqueByVehiculeId);
+router.get('/getByVehiculeId/:vehiculeId', auth,requireRoles('admin', 'chef_agence', 'agent'), historiqueController.getHistoriqueByVehiculeId);
 
 /**
  * @swagger
@@ -132,6 +133,6 @@ router.get('/getByVehiculeId/:vehiculeId', auth, historiqueController.getHistori
  *       400:
  *         description: Erreur de validation des données
  */
-router.post('/create', auth, historiqueController.createHistorique);
+router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), historiqueController.createHistorique);
 
 module.exports = router;
