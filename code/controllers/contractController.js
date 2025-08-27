@@ -34,6 +34,12 @@ const createContract = async (req, res) => {
   console.log("Action: Création d'un nouveau contrat");
   const data = req.body;
 
+  // On renomme client_id -> client_numero_permis pour correspondre à la DB
+  if (data.client_id) {
+    data.client_numero_permis = data.client_id;
+    delete data.client_id;
+  }
+
   const { error } = contractSchema.validate(data);
   if (error) {
     console.log("Erreur de validation:", error.details[0].message);
@@ -54,6 +60,11 @@ const updateContract = async (req, res) => {
   const id = req.params.id;
   const data = req.body;
   console.log(`Action: Mise à jour du contrat avec ID ${id}`);
+
+  if (data.client_id) {
+    data.client_numero_permis = data.client_id;
+    delete data.client_id;
+  }
 
   const { error } = contractSchema.validate(data);
   if (error) {

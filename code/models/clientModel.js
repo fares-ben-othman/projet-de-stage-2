@@ -4,38 +4,47 @@ const getAllClients = () => {
     return pool.query("SELECT * FROM clients WHERE is_deleted = FALSE");
 };
 
-const getClientById = (id) => {
-    return pool.query("SELECT * FROM clients WHERE is_deleted = False AND id = ? ",[id]);
+const getClientByNumeroPermis = (numero_permis) => {
+    return pool.query("SELECT * FROM clients WHERE is_deleted = FALSE AND numero_permis = ?", [numero_permis]);
 };
 
-const getClientByEmail = (email) =>{
-    return pool.query("SELECT * FROM clients WHERE email = ? ",[email]);
+const getClientByEmail = (email) => {
+    return pool.query("SELECT * FROM clients WHERE email = ?", [email]);
 };
 
 const getClientByCin = (cin) => {
     return pool.query("SELECT * FROM clients WHERE cin = ?", [cin]);
 };
-const createClient =(data) => {
-    const { nom,prenom,email,telephone,cin} = data;
-    return pool.query("INSERT INTO clients (nom ,prenom ,email, telephone, cin ) Values (? ,? ,? ,? ,?)",[nom,prenom,email,telephone,cin] );
-} ;
 
-const updateClient =(data,id) => {
-    const { nom,prenom,email,telephone,cin} = data;
-    return pool.query("Update clients SET nom = ? , prenom = ?, email = ?, telephone = ?, cin = ? WHERE id = ? ",[nom,prenom,email,telephone,cin,id]);
+const createClient = (data) => {
+    const { numero_permis, nom, prenom, email, telephone, cin } = data;
+    return pool.query(
+        "INSERT INTO clients (numero_permis, nom, prenom, email, telephone, cin) VALUES (?, ?, ?, ?, ?, ?)",
+        [numero_permis, nom, prenom, email, telephone, cin]
+    );
 };
 
-const deleteClient =(id) =>{
-    return pool.query("UPDATE clients SET is_deleted = TRUE, deleted_at = NOW() WHERE id = ? ",
-    [id]);
-}
+const updateClient = (data, numero_permis) => {
+    const { nom, prenom, email, telephone, cin } = data;
+    return pool.query(
+        "UPDATE clients SET nom = ?, prenom = ?, email = ?, telephone = ?, cin = ? WHERE numero_permis = ?",
+        [nom, prenom, email, telephone, cin, numero_permis]
+    );
+};
 
-module.exports ={
-   getAllClients ,
-   getClientById ,
-   getClientByEmail,
-   getClientByCin,
-   createClient ,
-   updateClient ,
-   deleteClient
+const deleteClient = (numero_permis) => {
+    return pool.query(
+        "UPDATE clients SET is_deleted = TRUE, deleted_at = NOW() WHERE numero_permis = ?",
+        [numero_permis]
+    );
+};
+
+module.exports = {
+    getAllClients,
+    getClientByNumeroPermis,
+    getClientByEmail,
+    getClientByCin,
+    createClient,
+    updateClient,
+    deleteClient
 };

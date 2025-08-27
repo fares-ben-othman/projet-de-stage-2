@@ -1,19 +1,19 @@
 const clientModel = require('../models/clientModel');
 const { clientSchema } = require('../validators/clientValidator');
 
-const findClient = async (id, res) => {
-    console.log(`Action: Vérification de l'existence du client avec ID ${id}`);
+const findClient = async (numero_permis, res) => {
+    console.log(`Action: Vérification de l'existence du client avec numéro de permis ${numero_permis}`);
     try {
-        const [rows] = await clientModel.getClientById(id);
+        const [rows] = await clientModel.getClientByNumeroPermis(numero_permis);
         if (rows.length === 0) {
-            console.log(`Client avec ID ${id} non trouvé`);
+            console.log(`Client avec numéro de permis ${numero_permis} non trouvé`);
             res.status(404).json({ error: 'Client non trouvé' });
             return null;
         }
         console.log("Client trouvé:", rows[0]);
         return rows[0];
     } catch (err) {
-        console.error(`Erreur lors de la recherche du client ${id}:`, err);
+        console.error(`Erreur lors de la recherche du client ${numero_permis}:`, err);
         res.status(500).json({ error: 'Erreur serveur' });
         return null;
     }
@@ -31,10 +31,10 @@ const getAllClients = async (req, res) => {
     }
 };
 
-const getClientById = async (req, res) => {
-    const { id } = req.params;
-    console.log(`Action: Récupération du client avec ID ${id}`);
-    const client = await findClient(id, res);
+const getClientByNumeroPermis = async (req, res) => {
+    const { numero_permis } = req.params;
+    console.log(`Action: Récupération du client avec numéro de permis ${numero_permis}`);
+    const client = await findClient(numero_permis, res);
     if (!client) return;
     res.status(200).json(client);
 };
@@ -47,7 +47,6 @@ const createClient = async (req, res) => {
         return res.status(400).json({ error: error.details[0].message });
     }
 
-    
     if (req.body.email) {
         const [rows] = await clientModel.getClientByEmail(req.body.email);
         if (rows.length > 0) {
@@ -55,7 +54,7 @@ const createClient = async (req, res) => {
             return res.status(400).json({ error: 'Email déjà utilisé' });
         }
     }
-    
+
     if (req.body.cin) {
         const [rows] = await clientModel.getClientByCin(req.body.cin);
         if (rows.length > 0) {
@@ -75,11 +74,11 @@ const createClient = async (req, res) => {
 };
 
 const updateClient = async (req, res) => {
-    const { id } = req.params;
-    console.log(`Action: Mise à jour du client avec ID ${id}`);
+    const { numero_permis } = req.params;
+    console.log(`Action: Mise à jour du client avec numéro de permis ${numero_permis}`);
 
-    const client = await findClient(id, res);
-    if (!client) return; // Si le client n'existe pas, on stoppe l'exécution
+    const client = await findClient(numero_permis, res);
+    if (!client) return;
 
     const { error } = clientSchema.validate(req.body);
     if (error) {
@@ -88,56 +87,51 @@ const updateClient = async (req, res) => {
     }
 
     try {
-        
         if (req.body.email) {
             const [emailRows] = await clientModel.getClientByEmail(req.body.email);
-            console.log(emailRows);
-            if (emailRows.length > 0 && Number(emailRows[0].id) !== Number(id)) {
+            if (emailRows.length > 0 && emailRows[0].numero_permis !== numero_permis) {
                 console.log(`Email ${req.body.email} déjà utilisé par un autre client`);
                 return res.status(400).json({ error: 'Email déjà utilisé' });
             }
         }
 
-        
         if (req.body.cin) {
             const [cinRows] = await clientModel.getClientByCin(req.body.cin);
-            console.log(cinRows);
-            if (cinRows.length > 0 && Number(cinRows[0].id) !== Number(id)) {
+            if (cinRows.length > 0 && cinRows[0].numero_permis !== numero_permis) {
                 console.log(`CIN ${req.body.cin} déjà utilisé par un autre client`);
                 return res.status(400).json({ error: 'CIN déjà utilisé' });
             }
         }
 
-        await clientModel.updateClient(req.body, id);
-        console.log(`Client avec ID ${id} mis à jour avec succès:`, req.body);
+        await clientModel.updateClient(req.body, numero_permis);
+        console.log(`Client avec numéro de permis ${numero_permis} mis à jour avec succès:`, req.body);
         res.status(200).json({ message: 'Client mis à jour avec succès' });
     } catch (err) {
-        console.error(`Erreur lors de la mise à jour du client avec ID ${id}:`, err);
+        console.error(`Erreur lors de la mise à jour du client avec numéro de permis ${numero_permis}:`, err);
         res.status(500).json({ error: 'Erreur lors de la mise à jour du client' });
     }
 };
 
-
 const deleteClient = async (req, res) => {
-    const { id } = req.params;
-    console.log(`Action: Suppression du client avec ID ${id}`);
+    const { numero_permis } = req.params;
+    console.log(`Action: Suppression du client avec numéro de permis ${numero_permis}`);
 
-    const client = await findClient(id, res);
+    const client = await findClient(numero_permis, res);
     if (!client) return;
 
     try {
-        await clientModel.deleteClient(id);
-        console.log(`Client avec ID ${id} supprimé avec succès`);
+        await clientModel.deleteClient(numero_permis);
+        console.log(`Client avec numéro de permis ${numero_permis} supprimé avec succès`);
         res.status(200).json({ message: 'Client supprimé avec succès' });
     } catch (err) {
-        console.error(`Erreur lors de la suppression du client avec ID ${id}:`, err);
+        console.error(`Erreur lors de la suppression du client avec numéro de permis ${numero_permis}:`, err);
         res.status(500).json({ error: 'Erreur lors de la suppression du client' });
     }
 };
 
 module.exports = {
     getAllClients,
-    getClientById,
+    getClientByNumeroPermis,
     createClient,
     updateClient,
     deleteClient

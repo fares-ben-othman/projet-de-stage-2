@@ -23,29 +23,29 @@ const clientController = require('../controllers/clientController');
  *       200:
  *         description: Liste des clients
  */
-router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent') , clientController.getAllClients);
+router.get('/get-all', auth, requireRoles('admin', 'chef_agence', 'agent'), clientController.getAllClients);
 
 /**
  * @swagger
- * /clients/getClientById/{id}:
+ * /clients/getClientByNumeroPermis/{numero_permis}:
  *   get:
  *     tags: [Clients]
- *     summary: Récupérer un client par ID
+ *     summary: Récupérer un client par numéro de permis
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: numero_permis
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Un client
  *       404:
  *         description: Client non trouvé
  */
-router.get('/getClientById/:id', auth,requireRoles('admin', 'chef_agence', 'agent') , clientController.getClientById);
+router.get('/getClientByNumeroPermis/:numero_permis', auth, requireRoles('admin', 'chef_agence', 'agent'), clientController.getClientByNumeroPermis);
 
 /**
  * @swagger
@@ -62,6 +62,8 @@ router.get('/getClientById/:id', auth,requireRoles('admin', 'chef_agence', 'agen
  *           schema:
  *             type: object
  *             properties:
+ *               numero_permis:
+ *                 type: string
  *               nom:
  *                 type: string
  *               prenom:
@@ -76,11 +78,11 @@ router.get('/getClientById/:id', auth,requireRoles('admin', 'chef_agence', 'agen
  *       201:
  *         description: Client créé
  */
-router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent') , clientController.createClient);
+router.post('/create', auth, requireRoles('admin', 'chef_agence', 'agent'), clientController.createClient);
 
 /**
  * @swagger
- * /clients/update/{id}:
+ * /clients/update/{numero_permis}:
  *   put:
  *     tags: [Clients]
  *     summary: Mettre à jour un client existant
@@ -88,10 +90,10 @@ router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent') , clie
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: numero_permis
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -113,11 +115,11 @@ router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent') , clie
  *       200:
  *         description: Client mis à jour
  */
-router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent') , clientController.updateClient);
+router.put('/update/:numero_permis', auth, requireRoles('admin', 'chef_agence', 'agent'), clientController.updateClient);
 
 /**
  * @swagger
- * /clients/delete/{id}:
+ * /clients/delete/{numero_permis}:
  *   delete:
  *     tags: [Clients]
  *     summary: Supprimer un client
@@ -125,14 +127,14 @@ router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent') , c
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: numero_permis
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Client supprimé
  */
-router.delete('/delete/:id', auth,requireRoles('admin', 'chef_agence', 'agent') , clientController.deleteClient);
+router.delete('/delete/:numero_permis', auth, requireRoles('admin', 'chef_agence', 'agent'), clientController.deleteClient);
 
 module.exports = router;

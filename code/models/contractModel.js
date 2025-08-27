@@ -10,9 +10,10 @@ const getContractById = (id) => {
 
 const createContract = (data) => {
   const {
-    client_id,
+    client_numero_permis,
     vehicule_id,
     agence_id,
+    agenceParent,  // nouvelle colonne
     date_debut,
     date_fin,
     montant,
@@ -29,9 +30,10 @@ const createContract = (data) => {
 
   return pool.query(`
     INSERT INTO contrats (
-      client_id,
+      client_numero_permis,
       vehicule_id,
       agence_id,
+      agenceParent,
       date_debut,
       date_fin,
       montant,
@@ -44,11 +46,12 @@ const createContract = (data) => {
       carburant_final,
       frais_supplementaires,
       rapport_restitution
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `, [
-    client_id,
+    client_numero_permis,
     vehicule_id,
     agence_id,
+    agenceParent,
     date_debut,
     date_fin,
     montant,
@@ -66,9 +69,10 @@ const createContract = (data) => {
 
 const updateContract = (data, id) => {
   const {
-    client_id,
+    client_numero_permis,
     vehicule_id,
     agence_id,
+    agenceParent, // nouvelle colonne
     date_debut,
     date_fin,
     montant,
@@ -85,9 +89,10 @@ const updateContract = (data, id) => {
 
   return pool.query(`
     UPDATE contrats SET
-      client_id = ?,
+      client_numero_permis = ?,
       vehicule_id = ?,
       agence_id = ?,
+      agenceParent = ?,
       date_debut = ?,
       date_fin = ?,
       montant = ?,
@@ -102,9 +107,10 @@ const updateContract = (data, id) => {
       rapport_restitution = ?
     WHERE id = ?
   `, [
-    client_id,
+    client_numero_permis,
     vehicule_id,
     agence_id,
+    agenceParent,
     date_debut,
     date_fin,
     montant,

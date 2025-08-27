@@ -23,7 +23,7 @@ const contractController = require('../controllers/contractController');
  *       200:
  *         description: Liste des contrats
  */
-router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent'), contractController.getAllContracts);
+router.get('/get-all', auth, requireRoles('admin', 'chef_agence', 'agent'), contractController.getAllContracts);
 
 /**
  * @swagger
@@ -45,7 +45,7 @@ router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent'), contr
  *       404:
  *         description: Contrat non trouvé
  */
-router.get('/getContractById/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), contractController.getContractById);
+router.get('/getContractById/:id', auth, requireRoles('admin', 'chef_agence', 'agent'), contractController.getContractById);
 
 /**
  * @swagger
@@ -62,8 +62,8 @@ router.get('/getContractById/:id', auth,requireRoles('admin', 'chef_agence', 'ag
  *           schema:
  *             type: object
  *             properties:
- *               client_id:
- *                 type: integer
+ *               client_numero_permis:
+ *                 type: string
  *               vehicule_id:
  *                 type: integer
  *               agence_id:
@@ -79,23 +79,23 @@ router.get('/getContractById/:id', auth,requireRoles('admin', 'chef_agence', 'ag
  *               remise:
  *                 type: number
  *               options_assurance:
- *                 type: string
+ *                 type: boolean
  *               options_gps:
- *                 type: string
+ *                 type: boolean
  *               options_conducteur_add:
- *                 type: string
+ *                 type: boolean
  *               etat_pickup:
  *                 type: string
  *               km_initial:
  *                 type: number
  *               carburant_final:
- *                 type: string
- *               frais_supplémentaires:
+ *                 type: number
+ *               frais_supplementaires:
  *                 type: number
  *               rapport_restitution:
  *                 type: string
  *             required:
- *               - client_id
+ *               - client_numero_permis
  *               - vehicule_id
  *               - agence_id
  *               - date_debut
@@ -107,7 +107,7 @@ router.get('/getContractById/:id', auth,requireRoles('admin', 'chef_agence', 'ag
  *       500:
  *         description: Erreur serveur
  */
-router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), contractController.createContract);
+router.post('/create', auth, requireRoles('admin', 'chef_agence', 'agent'), contractController.createContract);
 
 /**
  * @swagger
@@ -130,8 +130,8 @@ router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), contr
  *           schema:
  *             type: object
  *             properties:
- *               client_id:
- *                 type: integer
+ *               client_numero_permis:
+ *                 type: string
  *               vehicule_id:
  *                 type: integer
  *               agence_id:
@@ -147,18 +147,18 @@ router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), contr
  *               remise:
  *                 type: number
  *               options_assurance:
- *                 type: string
+ *                 type: boolean
  *               options_gps:
- *                 type: string
+ *                 type: boolean
  *               options_conducteur_add:
- *                 type: string
+ *                 type: boolean
  *               etat_pickup:
  *                 type: string
  *               km_initial:
  *                 type: number
  *               carburant_final:
- *                 type: string
- *               frais_supplémentaires:
+ *                 type: number
+ *               frais_supplementaires:
  *                 type: number
  *               rapport_restitution:
  *                 type: string
@@ -170,7 +170,7 @@ router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), contr
  *       500:
  *         description: Erreur serveur
  */
-router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), contractController.updateContract);
+router.put('/update/:id', auth, requireRoles('admin', 'chef_agence', 'agent'), contractController.updateContract);
 
 /**
  * @swagger
@@ -194,6 +194,6 @@ router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), co
  *       500:
  *         description: Erreur serveur
  */
-router.delete('/delete/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), contractController.deleteContract);
+router.delete('/delete/:id', auth, requireRoles('admin', 'chef_agence', 'agent'), contractController.deleteContract);
 
 module.exports = router;

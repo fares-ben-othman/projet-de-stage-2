@@ -32,7 +32,7 @@ CREATE TABLE vehicules (
 
 -- Table clients
 CREATE TABLE clients (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  numero_permis VARCHAR(30) PRIMARY KEY,
   nom VARCHAR(100) NOT NULL,
   prenom VARCHAR(100),
   email VARCHAR(100) UNIQUE,
@@ -45,8 +45,9 @@ CREATE TABLE clients (
 -- Table contrats
 CREATE TABLE contrats (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  client_id INT NOT NULL,
+  client_numero_permis VARCHAR(30) NOT NULL,
   vehicule_id INT NOT NULL,
+  agenceParent INT DEFAULT NULL, -- nouvelle colonne
   agence_id INT NOT NULL,
   date_debut DATE NOT NULL,
   date_fin DATE NOT NULL,
@@ -65,7 +66,7 @@ CREATE TABLE contrats (
   rapport_restitution TEXT,
   is_deleted BOOLEAN DEFAULT FALSE,
   deleted_at DATETIME DEFAULT NULL,
-  FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  FOREIGN KEY (client_numero_permis) REFERENCES clients(numero_permis) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (vehicule_id) REFERENCES vehicules(id) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (agence_id) REFERENCES agences(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -117,7 +118,7 @@ CREATE TABLE finances (
   FOREIGN KEY (agence_id) REFERENCES agences(id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
--- Table utilisateurs (authentication + roles + activation)
+-- Table utilisateurs
 CREATE TABLE utilisateurs (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nom VARCHAR(100) NOT NULL,
@@ -132,7 +133,7 @@ CREATE TABLE utilisateurs (
   FOREIGN KEY (agence_id) REFERENCES agences(id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
--- Table historique_vehicule (logs)
+-- Table historique_vehicule
 CREATE TABLE historique_vehicule (
   id INT AUTO_INCREMENT PRIMARY KEY,
   vehicule_id INT NOT NULL,
@@ -144,9 +145,8 @@ CREATE TABLE historique_vehicule (
   FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
--- Indexes for optimization
+-- Indexes
 CREATE INDEX idx_contrats_date ON contrats(date_debut, date_fin);
 CREATE INDEX idx_interventions_date ON interventions(date_intervention);
 CREATE INDEX idx_finances_date ON finances(date_finance);
 CREATE INDEX idx_interventions_type ON interventions(type);
-

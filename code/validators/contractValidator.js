@@ -1,10 +1,11 @@
 const Joi = require('joi');
 
-const contratSchema = Joi.object({
-  client_id: Joi.number().integer().required(),
+const contractSchema = Joi.object({
+  client_numero_permis: Joi.string().max(30).required(), 
   vehicule_id: Joi.number().integer().required(),
   agence_id: Joi.number().integer().required(),
-  
+  agenceParent: Joi.number().integer().allow(null), 
+
   date_debut: Joi.date().required(),
   date_fin: Joi.date().min(Joi.ref('date_debut')).required(),
 
@@ -30,4 +31,4 @@ const contratSchema = Joi.object({
   deleted_at: Joi.date().allow(null),
 });
 
-module.exports = {contratSchema};
+module.exports = { contractSchema };
