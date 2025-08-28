@@ -68,7 +68,8 @@ CREATE TABLE contrats (
   deleted_at DATETIME DEFAULT NULL,
   FOREIGN KEY (client_numero_permis) REFERENCES clients(numero_permis) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (vehicule_id) REFERENCES vehicules(id) ON DELETE RESTRICT ON UPDATE CASCADE,
-  FOREIGN KEY (agence_id) REFERENCES agences(id) ON DELETE RESTRICT ON UPDATE CASCADE
+  FOREIGN KEY (agence_id) REFERENCES agences(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  FOREIGN KEY (agenceParent) REFERENCES agences(id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- Table transferts
@@ -144,6 +145,24 @@ CREATE TABLE historique_vehicule (
   FOREIGN KEY (vehicule_id) REFERENCES vehicules(id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id) ON DELETE SET NULL ON UPDATE CASCADE
 );
+
+-- Table journal_admin
+CREATE TABLE journal_admin (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  utilisateur_id INT NOT NULL,
+  utilisateur_nom VARCHAR(100) NOT NULL, 
+  agence_id INT DEFAULT NULL,
+  role VARCHAR(50) NOT NULL,
+  type_action VARCHAR(100) NOT NULL,       
+  table_cible VARCHAR(100),                
+  identifiant_cible INT,                   
+  description TEXT NOT NULL,               
+  statut ENUM('SUCCES', 'ECHEC') NOT NULL, 
+  date_action DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (agence_id) REFERENCES agences(id) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
 
 -- Indexes
 CREATE INDEX idx_contrats_date ON contrats(date_debut, date_fin);
