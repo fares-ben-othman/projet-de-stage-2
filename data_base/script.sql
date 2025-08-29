@@ -155,7 +155,7 @@ CREATE TABLE journal_admin (
   role VARCHAR(50) NOT NULL,
   type_action VARCHAR(100) NOT NULL,       
   table_cible VARCHAR(100),                
-  identifiant_cible INT,                   
+  identifiant_cible VARCHAR(50),                   
   description TEXT NOT NULL,               
   statut ENUM('SUCCES', 'ECHEC') NOT NULL, 
   date_action DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

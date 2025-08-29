@@ -13,7 +13,7 @@ const createContract = (data) => {
     client_numero_permis,
     vehicule_id,
     agence_id,
-    agenceParent,  // nouvelle colonne
+    agenceParent,
     date_debut,
     date_fin,
     montant,
@@ -23,6 +23,9 @@ const createContract = (data) => {
     options_conducteur_add,
     etat_pickup,
     km_initial,
+    carburant_initial,
+    etat_dropoff,
+    km_final,
     carburant_final,
     frais_supplementaires,
     rapport_restitution,
@@ -43,10 +46,13 @@ const createContract = (data) => {
       options_conducteur_add,
       etat_pickup,
       km_initial,
+      carburant_initial,
+      etat_dropoff,
+      km_final,
       carburant_final,
       frais_supplementaires,
       rapport_restitution
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `, [
     client_numero_permis,
     vehicule_id,
@@ -61,11 +67,15 @@ const createContract = (data) => {
     options_conducteur_add,
     etat_pickup,
     km_initial,
+    carburant_initial,
+    etat_dropoff,
+    km_final,
     carburant_final,
     frais_supplementaires,
     rapport_restitution,
   ]);
 };
+
 
 const updateContract = (data, id) => {
   const {
@@ -82,6 +92,9 @@ const updateContract = (data, id) => {
     options_conducteur_add,
     etat_pickup,
     km_initial,
+    carburant_initial,
+    etat_dropoff,
+    km_final,
     carburant_final,
     frais_supplementaires,
     rapport_restitution,
@@ -102,6 +115,9 @@ const updateContract = (data, id) => {
       options_conducteur_add = ?,
       etat_pickup = ?,
       km_initial = ?,
+      carburant_initial = ?,
+      etat_dropoff = ?,
+      km_final = ?,
       carburant_final = ?,
       frais_supplementaires = ?,
       rapport_restitution = ?
@@ -120,12 +136,16 @@ const updateContract = (data, id) => {
     options_conducteur_add,
     etat_pickup,
     km_initial,
+    carburant_initial,
+    etat_dropoff,
+    km_final,
     carburant_final,
     frais_supplementaires,
     rapport_restitution,
-    id,
+    id
   ]);
 };
+
 
 const deleteContract = (id) => {
   return pool.query(

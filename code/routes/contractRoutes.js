@@ -68,6 +68,9 @@ router.get('/getContractById/:id', auth, requireRoles('admin', 'chef_agence', 'a
  *                 type: integer
  *               agence_id:
  *                 type: integer
+ *               agenceParent:
+ *                 type: integer
+ *                 nullable: true
  *               date_debut:
  *                 type: string
  *                 format: date
@@ -76,8 +79,12 @@ router.get('/getContractById/:id', auth, requireRoles('admin', 'chef_agence', 'a
  *                 format: date
  *               montant:
  *                 type: number
+ *                 format: float
  *               remise:
  *                 type: number
+ *                 format: float
+ *                 minimum: 0
+ *                 maximum: 100
  *               options_assurance:
  *                 type: boolean
  *               options_gps:
@@ -86,14 +93,33 @@ router.get('/getContractById/:id', auth, requireRoles('admin', 'chef_agence', 'a
  *                 type: boolean
  *               etat_pickup:
  *                 type: string
+ *                 enum: [neuf, bon, abime, accidenté, autre]
  *               km_initial:
+ *                 type: integer
+ *                 minimum: 0
+ *               carburant_initial:
  *                 type: number
+ *                 format: float
+ *                 minimum: 0
+ *                 maximum: 100
+ *               etat_dropoff:
+ *                 type: string
+ *                 enum: [neuf, bon, abime, accidenté, autre]
+ *               km_final:
+ *                 type: integer
+ *                 minimum: 0
  *               carburant_final:
  *                 type: number
+ *                 format: float
+ *                 minimum: 0
+ *                 maximum: 100
  *               frais_supplementaires:
  *                 type: number
+ *                 format: float
+ *                 minimum: 0
  *               rapport_restitution:
  *                 type: string
+ *                 nullable: true
  *             required:
  *               - client_numero_permis
  *               - vehicule_id
@@ -107,7 +133,14 @@ router.get('/getContractById/:id', auth, requireRoles('admin', 'chef_agence', 'a
  *       500:
  *         description: Erreur serveur
  */
-router.post('/create', auth, requireRoles('admin', 'chef_agence', 'agent'), contractController.createContract);
+router.post(
+  '/create',
+  auth,
+  requireRoles('admin', 'chef_agence', 'agent'),
+  contractController.createContract
+);
+
+
 
 /**
  * @swagger
@@ -136,6 +169,9 @@ router.post('/create', auth, requireRoles('admin', 'chef_agence', 'agent'), cont
  *                 type: integer
  *               agence_id:
  *                 type: integer
+ *               agenceParent:
+ *                 type: integer
+ *                 nullable: true
  *               date_debut:
  *                 type: string
  *                 format: date
@@ -144,8 +180,10 @@ router.post('/create', auth, requireRoles('admin', 'chef_agence', 'agent'), cont
  *                 format: date
  *               montant:
  *                 type: number
+ *                 format: float
  *               remise:
  *                 type: number
+ *                 format: float
  *               options_assurance:
  *                 type: boolean
  *               options_gps:
@@ -154,14 +192,33 @@ router.post('/create', auth, requireRoles('admin', 'chef_agence', 'agent'), cont
  *                 type: boolean
  *               etat_pickup:
  *                 type: string
+ *                 enum: [neuf, bon, abime, accidenté, autre]
  *               km_initial:
  *                 type: number
+ *                 minimum: 0
+ *               carburant_initial:
+ *                 type: number
+ *                 format: float
+ *                 minimum: 0
+ *                 maximum: 100
+ *               etat_dropoff:
+ *                 type: string
+ *                 enum: [neuf, bon, abime, accidenté, autre]
+ *               km_final:
+ *                 type: number
+ *                 minimum: 0
  *               carburant_final:
  *                 type: number
+ *                 format: float
+ *                 minimum: 0
+ *                 maximum: 100
  *               frais_supplementaires:
  *                 type: number
+ *                 format: float
+ *                 minimum: 0
  *               rapport_restitution:
  *                 type: string
+ *                 nullable: true
  *     responses:
  *       200:
  *         description: Contrat mis à jour
@@ -170,7 +227,12 @@ router.post('/create', auth, requireRoles('admin', 'chef_agence', 'agent'), cont
  *       500:
  *         description: Erreur serveur
  */
-router.put('/update/:id', auth, requireRoles('admin', 'chef_agence', 'agent'), contractController.updateContract);
+router.put(
+  '/update/:id',
+  auth,
+  requireRoles('admin', 'chef_agence', 'agent'),
+  contractController.updateContract
+);
 
 /**
  * @swagger
