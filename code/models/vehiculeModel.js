@@ -4,12 +4,13 @@ const getAllVehicules = () => {
   return pool.query('SELECT * FROM vehicules WHERE is_deleted = FALSE');
 };
 
-const getVehiculeById = (id) => {
-  return pool.query('SELECT * FROM vehicules WHERE id = ? AND is_deleted = FALSE', [id]);
-};
 const getVehiculeByImmatriculation = (immatriculation) => {
-  return pool.query("SELECT * FROM vehicules WHERE  immatriculation = ?", [immatriculation]);
+  return pool.query(
+    'SELECT * FROM vehicules WHERE immatriculation = ? AND is_deleted = FALSE',
+    [immatriculation]
+  );
 };
+
 const createVehicule = (vehicule) => {
   const {
     immatriculation,
@@ -30,35 +31,28 @@ const createVehicule = (vehicule) => {
   );
 };
 
-const updateVehicule = (vehicule, id) => {
-  const {
-    immatriculation,
-    marque,
-    modele,
-    annee,
-    kilometrage,
-    statut,
-    date_assurance,
-    agence_id
-  } = vehicule;
+
+const updateVehicule = (vehicule, immatriculation) => {
+  const { marque, modele, annee, kilometrage, statut, date_assurance, agence_id } = vehicule;
 
   return pool.query(
-    `UPDATE vehicules SET immatriculation = ?, marque = ?, modele = ?, annee = ?, kilometrage = ?, statut = ?, date_assurance = ?, agence_id = ?
-     WHERE id = ?`,
-    [immatriculation, marque, modele, annee, kilometrage, statut, date_assurance, agence_id, id]
+    `UPDATE vehicules 
+     SET marque = ?, modele = ?, annee = ?, kilometrage = ?, statut = ?, date_assurance = ?, agence_id = ?
+     WHERE immatriculation = ? AND is_deleted = FALSE`,
+    [marque, modele, annee, kilometrage, statut, date_assurance, agence_id, immatriculation]
   );
 };
 
-const deleteVehicule = (id) => {
+
+const deleteVehicule = (immatriculation) => {
   return pool.query(
-    `UPDATE vehicules SET is_deleted = TRUE, deleted_at = NOW() WHERE id = ?`,
-    [id]
+    `UPDATE vehicules SET is_deleted = TRUE, deleted_at = NOW() WHERE immatriculation = ?`,
+    [immatriculation]
   );
 };
 
 module.exports = {
   getAllVehicules,
-  getVehiculeById,
   getVehiculeByImmatriculation,
   createVehicule,
   updateVehicule,

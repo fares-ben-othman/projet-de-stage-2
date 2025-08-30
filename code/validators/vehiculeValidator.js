@@ -1,7 +1,6 @@
 const Joi = require('joi');
 
 const vehiculeSchema = Joi.object({
-  immatriculation: Joi.string().max(20).required(),
   marque: Joi.string().max(50).allow(null, ''),
   modele: Joi.string().max(50).allow(null, ''),
   annee: Joi.number().integer().min(1900).max(new Date().getFullYear()).allow(null),

@@ -23,29 +23,39 @@ const vehiculeController = require('../controllers/vehiculeController');
  *       200:
  *         description: Liste des véhicules
  */
-router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent'), vehiculeController.getAllVehicules);
+router.get(
+  '/get-all', 
+  auth, 
+  requireRoles('admin', 'chef_agence', 'agent'), 
+  vehiculeController.getAllVehicules
+);
 
 /**
  * @swagger
- * /vehicules/getVehiculeById/{id}:
+ * /vehicules/get/{immatriculation}:
  *   get:
  *     tags: [Vehicules]
- *     summary: Récupérer un véhicule par ID
+ *     summary: Récupérer un véhicule par son immatriculation
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: immatriculation
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Un véhicule
  *       404:
  *         description: Véhicule non trouvé
  */
-router.get('/getVehiculeById/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), vehiculeController.getVehiculeById);
+router.get(
+  '/get/:immatriculation', 
+  auth, 
+  requireRoles('admin', 'chef_agence', 'agent'), 
+  vehiculeController.getVehiculeByImmatriculation
+);
 
 /**
  * @swagger
@@ -74,7 +84,7 @@ router.get('/getVehiculeById/:id', auth,requireRoles('admin', 'chef_agence', 'ag
  *                 type: integer
  *               statut:
  *                 type: string
- *                 enum: [disponible, loue, maintenance, leasing, reserve]
+ *                 enum: [disponible, loue, maintenance, leasing, reserve, transfert]
  *               date_assurance:
  *                 type: string
  *                 format: date
@@ -84,22 +94,28 @@ router.get('/getVehiculeById/:id', auth,requireRoles('admin', 'chef_agence', 'ag
  *       201:
  *         description: Véhicule créé
  */
-router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), vehiculeController.createVehicule);
+router.post(
+  '/create', 
+  auth, 
+  requireRoles('admin', 'chef_agence', 'agent'), 
+  vehiculeController.createVehicule
+);
 
 /**
  * @swagger
- * /vehicules/update/{id}:
+ * /vehicules/update/{immatriculation}:
  *   put:
  *     tags: [Vehicules]
- *     summary: Mettre à jour un véhicule existant
+ *     summary: Mettre à jour un véhicule existant (sans modifier l'immatriculation)
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: immatriculation
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
+ *         description: L'immatriculation du véhicule à mettre à jour
  *     requestBody:
  *       required: true
  *       content:
@@ -107,8 +123,6 @@ router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), vehic
  *           schema:
  *             type: object
  *             properties:
- *               immatriculation:
- *                 type: string
  *               marque:
  *                 type: string
  *               modele:
@@ -119,7 +133,7 @@ router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), vehic
  *                 type: integer
  *               statut:
  *                 type: string
- *                 enum: [disponible, loue, maintenance, leasing, reserve]
+ *                 enum: [disponible, loue, maintenance, leasing, reserve, transfert]
  *               date_assurance:
  *                 type: string
  *                 format: date
@@ -128,12 +142,24 @@ router.post('/create', auth,requireRoles('admin', 'chef_agence', 'agent'), vehic
  *     responses:
  *       200:
  *         description: Véhicule mis à jour
+ *       400:
+ *         description: Erreur de validation
+ *       404:
+ *         description: Véhicule introuvable
+ *       500:
+ *         description: Erreur serveur
  */
-router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), vehiculeController.updateVehicule);
+router.put(
+  '/update/:immatriculation',
+  auth,
+  requireRoles('admin', 'chef_agence', 'agent'),
+  vehiculeController.updateVehicule
+);
+
 
 /**
  * @swagger
- * /vehicules/delete/{id}:
+ * /vehicules/delete/{immatriculation}:
  *   delete:
  *     tags: [Vehicules]
  *     summary: Supprimer un véhicule
@@ -141,14 +167,19 @@ router.put('/update/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), ve
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: immatriculation
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Véhicule supprimé
  */
-router.delete('/delete/:id', auth,requireRoles('admin', 'chef_agence', 'agent'), vehiculeController.deleteVehicule);
+router.delete(
+  '/delete/:immatriculation', 
+  auth, 
+  requireRoles('admin', 'chef_agence', 'agent'), 
+  vehiculeController.deleteVehicule
+);
 
 module.exports = router;
