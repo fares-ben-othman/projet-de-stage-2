@@ -1,0 +1,32 @@
+# Node.js dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Logs
+logs
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode
+.idea
+
+# Tests
+coverage
+__tests__
+
+# Git
+.git
+.gitignore
+
+# Database scripts (pas utiles dans l’image)
+data_base
