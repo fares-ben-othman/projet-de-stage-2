@@ -11,7 +11,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Installer uniquement les dépendances de production
-RUN npm ci --omit=dev
+RUN npm install --omit=dev
 
 # -------- Étape 2 : image finale --------
 FROM node:18-alpine
