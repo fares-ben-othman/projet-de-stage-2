@@ -5,8 +5,8 @@ RUN apk add --no-cache python3 make g++
 
 WORKDIR /app
 
-# Copy dependency files
-COPY package*.json ./
+# Copier uniquement les fichiers nécessaires pour installer les dépendances
+COPY code/package*.json ./
 
 RUN npm install --omit=dev
 
@@ -15,9 +15,10 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# Copier node_modules depuis l'étape build
 COPY --from=build /app/node_modules ./node_modules
 
-# Copy source code
+# Copier le code source
 COPY code/ . 
 
 ENV NODE_ENV=production
