@@ -11,7 +11,8 @@ variables:
   dockerRegistryServiceConnection: '626decf6-f112-479e-9c0d-02a52c1aae06'
   imageRepository: 'carsentialbackend'
   containerRegistry: 'carsential.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  dockerfilePath: '$(Build.SourcesDirectory)/back-end/Dockerfile'
+  buildContext: '$(Build.SourcesDirectory)/back-end'
   tag: 'latest'
 
 stages:
@@ -27,6 +28,7 @@ stages:
         command: buildAndPush
         repository: $(imageRepository)
         dockerfile: $(dockerfilePath)
+        buildContext: $(buildContext)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
