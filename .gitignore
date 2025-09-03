@@ -1,5 +1,4 @@
 # pour ignorer les fichers hedhom 
 /node_modules/
 /code/.env
-/package.json
-/package-lock.json
+
