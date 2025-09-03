@@ -5,7 +5,7 @@ RUN apk add --no-cache python3 make g++
 
 WORKDIR /app
 
-# Copier uniquement les fichiers nécessaires pour installer les dépendances
+# Copier uniquement les fichiers nécessaires pour installer les dépendances ----
 COPY package.json package-lock.json ./
 
 
