@@ -106,7 +106,6 @@ const getUserById = async (req, res) => {
   }
 };
 
-// Création d'un utilisateur (pas de journal ici)
 const register = async (req, res) => {
   console.log("Action: Création d'un utilisateur:", req.body.email);
   const { error } = userCreateSchema.validate(req.body);
@@ -116,6 +115,7 @@ const register = async (req, res) => {
   }
 
   try {
+    // Vérification que l'email n'existe pas déjà
     const [exist] = await userModel.getUserByEmail(req.body.email);
     console.log('Vérification email existant:', exist.length);
     if (exist.length > 0) {
@@ -123,19 +123,25 @@ const register = async (req, res) => {
       return res.status(400).json({ error: 'Email déjà utilisé' });
     }
 
-    let agenceId = req.body.agence_id || null;
+    // Vérification de l'agence
+    let agenceId = req.body.agence_id;
     if (agenceId) {
       const [agenceRows] = await agenceModel.getAgenceById(agenceId);
       console.log('Vérification agence existante:', agenceRows.length);
-      if (agenceRows.length === 0) {
+      if (!agenceRows || agenceRows.length === 0) {
         console.log('Agence invalide:', agenceId);
         return res.status(400).json({ error: 'Agence invalide' });
       }
+    } else {
+      // Aucun ID ou ID falsy (ex: 0), refus de l'inscription si obligatoire
+      return res.status(400).json({ error: 'Agence invalide ou non fournie' });
     }
 
+    // Hash du mot de passe
     console.log('Hashage du mot de passe...');
     const hash = await bcrypt.hash(req.body.mot_de_passe, ROUNDS);
 
+    // Préparation des données
     const toInsert = {
       nom: req.body.nom,
       email: req.body.email,
@@ -144,6 +150,7 @@ const register = async (req, res) => {
       is_active: true,
     };
 
+    // Insertion en DB
     console.log('Insertion utilisateur dans la DB:', toInsert);
     const [result] = await userModel.createUser(toInsert);
     console.log("Utilisateur créé ID:", result.insertId);
@@ -157,6 +164,8 @@ const register = async (req, res) => {
     res.status(500).json({ error: 'Erreur lors de la création de l’utilisateur' });
   }
 };
+
+
 
 // Login
 const login = async (req, res) => {
