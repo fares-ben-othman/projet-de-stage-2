@@ -23,7 +23,7 @@ const { requireRoles } = require('../middlewares/roles');
  *       200:
  *         description: Liste des utilisateurs
  */
-router.get('/get-all', auth,requireRoles('admin', 'chef_agence', 'agent'), userController.getAllUsers);
+router.get('/get-all', userController.getAllUsers);
 
 /**
  * @swagger
